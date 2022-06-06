@@ -1,4 +1,4 @@
-import { GET_GENRES, UPDATE_GENRES } from "./actions"
+import { UPDATE_GENRES } from "./actions"
 
 
 
@@ -8,7 +8,7 @@ const initialData = {
 
 export const reducerGenres = (state = initialData, actions)=>{
     switch(actions.type){
-        case GET_GENRES:
+        case UPDATE_GENRES:
             return {
                 ...state,
                 dataGenres: actions.dataGenres
