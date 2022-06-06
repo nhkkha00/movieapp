@@ -30,18 +30,6 @@ const Screen = ({ navigation }) => {
       <Title />
       <SearchBar />
       <TabBar data={genres} onTabPress={onTabPress}/>
-      <View style={{justifyContent:'center',alignItems:'center',marginTop:10}}>
-      <FlatList
-        data={movies}
-        renderItem={({item})=>{
-          return (
-            <View style={{width:200,height:300,margin:20,backgroundColor:'orange'}}>
-              <Text style={{color:'white'}}>{item.title}</Text>
-            </View>
-          )
-        }}
-      />
-      </View>
     </View >
   );
 }
