@@ -1,22 +1,35 @@
 import axios from "axios";
-import {put} from 'redux-saga/effects'
-import API_KEY from "../connection/ApiKey";
-import { updateGenres } from "./actions";
+import {put, takeLatest,takeEvery} from 'redux-saga/effects'
+import { GET_ALL_GENRES, GET_MOVIES_BY_ID_GENRE } from "../connection/MethodApi";
+import {updateGenres,getMovies, GET_GENRES, GET_MOVIES, updateMovies} from './actions';
 
 
-export function* getSagaGenres(){
-
-    const str = `
-    https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US
-    `;
+function* getSagaGenres(){
 
     try{
-        const res = yield axios.get(str);
+
+        const res = yield axios.get(GET_ALL_GENRES());
 
         yield put(updateGenres(res.data.genres));
 
     }catch(err){
         console.log(err);
     }
+}
+
+function* getSagaMovies(actions){
+    try{
+        const id = actions.id;
+        const res = yield axios.get(GET_MOVIES_BY_ID_GENRE(id));
+        yield put(updateMovies(res.data.results));
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+export default function* rootSaga (){
+    yield takeEvery(GET_GENRES, getSagaGenres)
+    yield takeEvery(GET_MOVIES,getSagaMovies)
 }
 

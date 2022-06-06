@@ -1,12 +1,11 @@
-import { UPDATE_GENRES } from "./actions"
-
+import { UPDATE_GENRES } from "../actions"
 
 
 const initialData = {
     dataGenres: []
 }
 
-export const reducerGenres = (state = initialData, actions)=>{
+const reducerGenres = (state = initialData, actions)=>{
     switch(actions.type){
         case UPDATE_GENRES:
             return {
@@ -17,3 +16,5 @@ export const reducerGenres = (state = initialData, actions)=>{
             return state;
     }
 }
+
+export default reducerGenres;
