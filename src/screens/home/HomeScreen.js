@@ -7,6 +7,7 @@ import store from '../../redux/store';
 import { getGenres, getMovies } from '../../redux/actions';
 import COLORS from '../../colors';
 import TabBar from './TabBar';
+import ListMovies from './ListMovies';
 
 const Screen = ({ navigation }) => {
 
@@ -30,6 +31,7 @@ const Screen = ({ navigation }) => {
       <Title />
       <SearchBar />
       <TabBar data={genres} onTabPress={onTabPress}/>
+      <ListMovies data={movies}/>
     </View >
   );
 }
