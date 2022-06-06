@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text,FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList, ScrollView } from 'react-native';
 import COLORS from '../../colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
@@ -16,21 +16,8 @@ const Screen = ({ item }) => {
 
     const genres = useSelector(state => state.genres.dataGenres);
 
-    const [similarMovie, setSimilarMovie] = useState([]);
-
-    useEffect(() => {
-        const res = fetch(GET_SIMILAR_MOVIE(item.id))
-            .then((response) => response.json())
-            .then((json) => {
-                setSimilarMovie(json.results);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [similarMovie])
-
     return (
-        <View>
+        <ScrollView>
             <Video item={item} />
             <View style={styles.containerDetail} >
                 <Text style={styles.title}>{item.title}</Text>
@@ -75,16 +62,9 @@ const Screen = ({ item }) => {
 
                 <Text style={styles.section}>Related Movies</Text>
 
-
-                <FlatList
-                    data={similarMovie}
-                    horizontal
-                    renderItem={({ item }) => {
-                        <Text style={{ margin: 10, color: 'white' }}>{item.title}</Text>
-                    }}
-                />
+                <RelatedVideo id={item.id} />
             </View>
-        </View>
+        </ScrollView>
     );
 }
 

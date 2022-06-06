@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import COLORS from '../../colors';
 import Detail from './Detail';
 
@@ -9,11 +9,7 @@ const DetailScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        overScrollMode='never'
-      >
         <Detail item={item} />
-      </ScrollView>
     </View>
   );
 }

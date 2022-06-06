@@ -1,15 +1,27 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet,FlatList,Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { GET_SIMILAR_MOVIE } from '../../connection/MethodApi';
 
-const RelatedVideo = ({data}) => {
+const RelatedVideo = ({id}) => {
+
+  const [similarMovie, setSimilarMovie] = useState([]);
+
+  useEffect(() => {
+      const res = axios.get(GET_SIMILAR_MOVIE(id)).then(res => {
+        setSimilarMovie(res.data.results);
+    })
+    .catch(error => console.log(error));
+  })
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={setSimilarMovie}
         horizontal
         renderItem={({item})=>{
-          <Text style={{margin:10,color:'white'}}>{item.title}</Text>
+          <Text style={{color:'white'}}>{item}</Text>
         }}
       />
     </View>
@@ -18,7 +30,7 @@ const RelatedVideo = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height:300
+    height:200
   }
 });
 
