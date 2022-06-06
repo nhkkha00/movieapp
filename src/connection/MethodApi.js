@@ -9,3 +9,5 @@ export const GET_ALL_GENRES = () => {
 export const GET_MOVIES_BY_ID_GENRE = (id) => {
     return `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${id}`;
 }
+
+export const URL_IMG = 'https://image.tmdb.org/t/p';

@@ -6,26 +6,50 @@ import HomeScreen from '../home/HomeScreen'
 import FavScreen from '../fav/FavScreen';
 import COLORS from '../../colors';
 import TabBottom from './TabBotom';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from '../../redux/store';
+import { getGenres } from '../../redux/actions';
+import Loading from '../../components/Loading';
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen = () => {
+const Screen = () => {
 
+  const dispatch = useDispatch();
+
+  const genres = useSelector(state => state.genres.dataGenres);
+
+  useEffect(() => {
+    dispatch(getGenres());
+  }, [])
+
+  if (genres.length <= 0)
+    return <Loading />;
+  else {
+    return (
+      <Tab.Navigator
+        sceneContainerStyle={{ backgroundColor: COLORS.mainBg }}
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: COLORS.mainBg,
+            borderTopWidth: 0
+          }
+        }}
+        tabBar={props => <TabBottom {...props} />}
+      >
+        <Tab.Screen name='Home' component={HomeScreen} />
+        <Tab.Screen name='Fav' component={FavScreen} />
+      </Tab.Navigator>)
+  }
+}
+
+
+const MainScreen = () => {
   return (
-    <Tab.Navigator
-    sceneContainerStyle={{backgroundColor:COLORS.mainBg}}
-    screenOptions={{
-      headerShown:false,
-      tabBarStyle:{
-        backgroundColor:COLORS.mainBg,
-        borderTopWidth:0
-      }
-    }}
-    tabBar= {props => <TabBottom {...props}/>}
-    >
-        <Tab.Screen name='Home' component={HomeScreen}/>
-        <Tab.Screen name='Fav' component={FavScreen}/>
-    </Tab.Navigator>
+    <Provider store={store}>
+      <Screen />
+    </Provider>
   );
 }
 

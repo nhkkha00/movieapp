@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, FlatList} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Text, FlatList } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import Title from './Title';
@@ -7,6 +7,8 @@ import store from '../../redux/store';
 import { getGenres, getMovies } from '../../redux/actions';
 import COLORS from '../../colors';
 import TabBar from './TabBar';
+import ListMovies from './ListMovies';
+import Loading from '../../components/Loading';
 
 const Screen = ({ navigation }) => {
 
@@ -16,20 +18,36 @@ const Screen = ({ navigation }) => {
 
   const movies = useSelector(state => state.movies.dataMovies);
 
-  function onTabPress(item){
+  const [loading,setLoading] = useState(false);
+
+  function onTabPress(item) {
+    setLoading(true);
     dispatch(getMovies(item.id));
   }
 
   useEffect(() => {
-    dispatch(getGenres());
-    dispatch(getMovies(12));
-  }, [])
+    if (genres.length > 0) {
+      setLoading(false);
+      dispatch(getMovies(genres[0].id));
+    }else{
+      setLoading(true);
+    }
+  },[genres])
+
+  useEffect(()=>{
+    if (movies.length > 0) {
+      setLoading(false);
+    }else{
+      setLoading(true);
+    }
+  },[movies]);
 
   return (
     <View style={styles.container}>
       <Title />
       <SearchBar />
-      <TabBar data={genres} onTabPress={onTabPress}/>
+      <TabBar data={genres} onTabPress={onTabPress} />
+      { loading ? <Loading /> : <ListMovies data={movies} />}
     </View >
   );
 }

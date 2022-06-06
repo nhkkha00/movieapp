@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import DetailScreen from './detail/DetailScreen';
 import MainScreen from './main/MainScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
