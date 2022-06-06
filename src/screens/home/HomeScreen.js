@@ -20,11 +20,18 @@ const Screen = ({ navigation }) => {
 
   const [loading,setLoading] = useState(false);
 
+  //tab genres click
   function onTabPress(item) {
     setLoading(true);
     dispatch(getMovies(item.id));
   }
 
+  //click on item movie
+  function onTouchMovie(item){
+    navigation.navigate('Detail',{item});
+  }
+
+  //loading genres
   useEffect(() => {
     if (genres.length > 0) {
       setLoading(false);
@@ -34,6 +41,7 @@ const Screen = ({ navigation }) => {
     }
   },[genres])
 
+  //loading movies
   useEffect(()=>{
     if (movies.length > 0) {
       setLoading(false);
@@ -47,16 +55,16 @@ const Screen = ({ navigation }) => {
       <Title />
       <SearchBar />
       <TabBar data={genres} onTabPress={onTabPress} />
-      { loading ? <Loading /> : <ListMovies data={movies} />}
+      { loading ? <Loading /> : <ListMovies data={movies} onTouchMovie={onTouchMovie} />}
     </View >
   );
 }
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <Provider store={store}>
-      <Screen />
+      <Screen navigation={navigation}/>
     </Provider>
   )
 }

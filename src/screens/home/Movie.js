@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import COLORS from '../../colors';
 import { URL_IMG } from '../../connection/MethodApi';
 
-const Movie = ({ item, width, height, marginTop }) => {
+const Movie = ({ item, width, height, marginTop, onTouchMovie }) => {
 
 
     const image_source = `${URL_IMG}/w200${item.poster_path}`;
 
     return (
-        <View>
+        <TouchableOpacity onPress={onTouchMovie}>
             <Image style={{
                 width: width,
                 height: height,
@@ -29,7 +29,7 @@ const Movie = ({ item, width, height, marginTop }) => {
             }}>
                 {item.title}
             </Text>
-        </View>
+        </TouchableOpacity>
     );
 }
 
