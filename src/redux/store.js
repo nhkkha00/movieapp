@@ -1,15 +1,18 @@
 import { applyMiddleware, createStore } from "redux";
-import { reducerGenres } from "./reduce";
 import createSagaMiddleware from "@redux-saga/core";
-import { getSagaGenres } from "./sagas";
+import rootSaga from './sagas';
+import reducerGenres from "./rootReducer";
+import rootReducer from "./rootReducer";
+
 
 const  sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-    reducerGenres,
+    rootReducer,
     applyMiddleware(sagaMiddleware)
 );
 
-sagaMiddleware.run(getSagaGenres);
+
+sagaMiddleware.run(rootSaga);
 
 export default store;
