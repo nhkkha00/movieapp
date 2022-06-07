@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
 import Movie from './Movie';
 
-const ListMovies = ({ data }) => {
+const ListMovies = ({ data, onTouchMovie }) => {
 
     const { widthScreen } = Dimensions.get('screen');
 
@@ -23,7 +23,14 @@ const ListMovies = ({ data }) => {
                         height = 170;
                         marginTop = 20;
                     }
-                    return <Movie item={item} width={width} height={height} marginTop={marginTop} />
+                    return <Movie
+                        item={item}
+                        width={width}
+                        height={height}
+                        marginTop={marginTop}
+                        onTouchMovie={() => {
+                            onTouchMovie(item);
+                        }} />
                 }
                 }
             />
