@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, FlatList, ScrollView ,BackHandler,Alert} from 'react-native';
 import COLORS from '../../colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
@@ -28,7 +28,21 @@ const Screen = ({ item, navigation }) => {
 
     const similarMovie = useSelector(state => state.similarMovies.dataSimilarMovies);
 
-    function onPressBack(){
+    useEffect(() => {
+        const backAction = () => {
+            navigation.navigate('Home');
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
+    function onPressBackButton(){
         navigation.navigate('Home');
     }
 
@@ -43,7 +57,7 @@ const Screen = ({ item, navigation }) => {
                     overScrollMode='never'
                     showsVerticalScrollIndicator={false}
                 >
-                    <Video item={item} onPressBack={onPressBack} />
+                    <Video item={item} onPressBackButton={onPressBackButton} />
                     <View style={styles.containerDetail} >
                         <Text style={styles.title}>{item.title}</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -99,7 +113,7 @@ const Screen = ({ item, navigation }) => {
 
 
 
-const Detail = ({ item, navigation }) => {
+const Detail = ({ item, navigation, onPressBack }) => {
     return (
         <Provider store={store}>
             <Screen item={item} navigation={navigation}/>

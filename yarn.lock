@@ -2996,11 +2996,6 @@
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.146.tgz"
   "version" "1.4.146"
 
-"eme-encryption-scheme-polyfill@^2.0.1":
-  "integrity" "sha512-MHYJX1v145Pjj2YJTrVVuJOYyXrxGVy8LWf6kV5M4jrV/GyoeuJKyTuD+GaD+VAiE8Ip+MptiH4dXk6ZVmMNow=="
-  "resolved" "https://registry.npmjs.org/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.0.4.tgz"
-  "version" "2.0.4"
-
 "emittery@^0.7.1":
   "integrity" "sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ=="
   "resolved" "https://registry.npmjs.org/emittery/-/emittery-0.7.2.tgz"
@@ -4903,11 +4898,6 @@
     "array-includes" "^3.1.4"
     "object.assign" "^4.1.2"
 
-"keymirror@^0.1.1":
-  "integrity" "sha512-vIkZAFWoDijgQT/Nvl2AHCMmnegN2ehgTPYuyy2hWQkQSntI0S7ESYqdLkoSe1HyEBFHHkCgSIvVdSEiWwKvCg=="
-  "resolved" "https://registry.npmjs.org/keymirror/-/keymirror-0.1.1.tgz"
-  "version" "0.1.1"
-
 "kind-of@^3.0.2", "kind-of@^3.0.3":
   "integrity" "sha512-NOW9QQXMoZGg/oqnVNoNTTIFEIid1627WCffUBJEdMxYApq7mNE7CpzucIPc+ZQg25Phej7IJSmX3hO+oblOtQ=="
   "resolved" "https://registry.npmjs.org/kind-of/-/kind-of-3.2.2.tgz"
@@ -6111,27 +6101,13 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native-vector-icons@^9.1.0", "react-native-vector-icons@>= 2.1.0":
+"react-native-vector-icons@^9.1.0":
   "integrity" "sha512-2AHZ/h9d/+rC0odz+OwbGNlc1Lik/pHhSixn4HfC8RtQ8CxfSBZ6gg7bTLcZhdSvZN+ZEGi30Fj+ZnOSQy+smg=="
   "resolved" "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-9.1.0.tgz"
   "version" "9.1.0"
   dependencies:
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
-
-"react-native-video-player@^0.12.0":
-  "integrity" "sha512-7h288hwlvjxxBOJ1UOoUctW8auPyq22Lxltc1FIxSJAF/tYyPcnBxAtaWOxI7CGflRn51BLVlUTclXC4CB3BZA=="
-  "resolved" "https://registry.npmjs.org/react-native-video-player/-/react-native-video-player-0.12.0.tgz"
-  "version" "0.12.0"
-
-"react-native-video@^2.0.0", "react-native-video@^5.2.0":
-  "integrity" "sha512-5SK1lxyzrCkZF+WuxUxLR1Pt65E0rsWB1w1GrGxSLdC9zWYBumcmuHl+wPJ7UQvznjaH2Ze7uU1R3arejI7+WQ=="
-  "resolved" "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.0.tgz"
-  "version" "5.2.0"
-  dependencies:
-    "keymirror" "^0.1.1"
-    "prop-types" "^15.7.2"
-    "shaka-player" "^2.5.9"
 
 "react-native@*", "react-native@>=0.59", "react-native@0.68.2":
   "integrity" "sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw=="
@@ -6624,13 +6600,6 @@
   "integrity" "sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw=="
   "resolved" "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz"
   "version" "1.2.0"
-
-"shaka-player@^2.5.9":
-  "integrity" "sha512-3MC9k0OXJGw8AZ4n/ZNCZS2yDxx+3as5KgH6Tx4Q5TRboTBBCu6dYPI5vp1DxKeyU12MBN1Zcbs7AKzXv2EnCg=="
-  "resolved" "https://registry.npmjs.org/shaka-player/-/shaka-player-2.5.23.tgz"
-  "version" "2.5.23"
-  dependencies:
-    "eme-encryption-scheme-polyfill" "^2.0.1"
 
 "shallow-clone@^3.0.0":
   "integrity" "sha512-/6KqX+GVUdqPuPPd2LxDDxzX6CAbjJehAAOKlNpqqUpAqPM6HeL8f+o3a+JsyGjn2lv0WY8UsTgUJjU9Ok55NA=="
