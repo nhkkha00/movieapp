@@ -1,36 +1,59 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet,FlatList,Text } from 'react-native';
+import { View, StyleSheet, FlatList, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { GET_SIMILAR_MOVIE } from '../../connection/MethodApi';
+import COLORS from '../../colors';
+import { GET_SIMILAR_MOVIE, URL_IMG } from '../../connection/MethodApi';
 
-const RelatedVideo = ({id}) => {
+const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie }) => {
 
-  const [similarMovie, setSimilarMovie] = useState([]);
 
-  useEffect(() => {
-      const res = axios.get(GET_SIMILAR_MOVIE(id)).then(res => {
-        setSimilarMovie(res.data.results);
-    })
-    .catch(error => console.log(error));
-  })
+  //filter item already show
+  const dataFilter = data.filter(v=>v.id!==itemVideo.id);
 
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
-        data={setSimilarMovie}
+        overScrollMode='never'
+        data={dataFilter}
         horizontal
-        renderItem={({item})=>{
-          <Text style={{color:'white'}}>{item}</Text>
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => {
+          return (
+            <VideoItem item={item} onPressRelatedMovie={() => { onPressRelatedMovie(item) }} />
+          )
         }}
       />
     </View>
   );
 }
 
+const VideoItem = ({ item, onPressRelatedMovie }) => {
+
+  const image_source = `${URL_IMG}/w200${item.poster_path}`
+
+  return (
+    <TouchableOpacity style={styles.container} onPress={onPressRelatedMovie}>
+      <Image style={styles.image} resizeMode='stretch' source={{ uri: image_source }} />
+      <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
+    </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
-    height:200
+    margin: 10
+  },
+  image: {
+    width: 160,
+    height: 130,
+    borderRadius: 10
+  },
+  title: {
+    width: 150,
+    color: COLORS.white,
+    marginTop:10,
+    textAlign: 'auto',
   }
 });
 

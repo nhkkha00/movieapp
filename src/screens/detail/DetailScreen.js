@@ -9,7 +9,7 @@ const DetailScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-        <Detail item={item} />
+        <Detail item={item} navigation={navigation} />
     </View>
   );
 }

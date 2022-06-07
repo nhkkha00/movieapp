@@ -4,7 +4,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import Title from './Title';
 import store from '../../redux/store';
-import { getGenres, getMovies } from '../../redux/actions';
+import { getGenres, getMovies, getSimilarMovies } from '../../redux/actions';
 import COLORS from '../../colors';
 import TabBar from './TabBar';
 import ListMovies from './ListMovies';
@@ -28,6 +28,7 @@ const Screen = ({ navigation }) => {
 
   //click on item movie
   function onTouchMovie(item){
+    dispatch(getSimilarMovies(item.id));
     navigation.navigate('Detail',{item});
   }
 
