@@ -1,5 +1,4 @@
 package com.movieapp;
-
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;

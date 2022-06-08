@@ -55,5 +55,6 @@ allprojects {
                 includeModule("com.yqritc", "android-scalablevideoview")
             }
         }
+
     }
 }

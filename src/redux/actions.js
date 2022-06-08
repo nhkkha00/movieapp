@@ -1,4 +1,3 @@
-import { exp } from "react-native/Libraries/Animated/Easing";
 
 
 export const GET_GENRES = "GET_GENRES";
@@ -7,6 +6,8 @@ export const GET_MOVIES = "GET_MOVIES";
 export const UPDATE_MOVIES = "UPDATE_MOVIES";
 export const GET_SIMILAR_MOVIES = "GET_SIMILAR_MOVIES";
 export const UPDATE_SIMILAR_MOVIES = "UPDATE_SIMILAR_MOVIES";
+export const GET_VIDEO_MOVIE = "GET_VIDEO_MOVIE";
+export const UPDATE_VIDEO_MOVIES = "UPDATE_VIDEO_MOVIES";
 
 export const getGenres = ()=>{
     return {
@@ -47,5 +48,19 @@ export const updateSimilarMovies = (dataMovies)=>{
     return {
         type: UPDATE_SIMILAR_MOVIES,
         dataMovies
+    }
+}
+
+export const getVideoMovie = (id)=>{
+    return {
+        type:GET_VIDEO_MOVIE,
+        id
+    }
+}
+
+export const updateVideoMovie = (keyVideo)=>{
+    return {
+        type: UPDATE_VIDEO_MOVIES,
+        keyVideo
     }
 }

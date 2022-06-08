@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, FlatList, ScrollView ,BackHandler,Alert} from 'react-native';
+import { View, StyleSheet, Text, FlatList, ScrollView, BackHandler, TouchableOpacity } from 'react-native';
 import COLORS from '../../colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
 import GenreItem from './GenreItem';
 import { Provider, useSelector } from 'react-redux';
 import store from '../../redux/store';
-import Video from './Video';
+import VideoMovie from './VideoMovie';
 import RelatedVideo from './RelatedVideo';
-
 import { GET_SIMILAR_MOVIE } from '../../connection/MethodApi';
 import API_KEY from '../../connection/ApiKey';
 import axios from 'axios';
@@ -28,36 +27,38 @@ const Screen = ({ item, navigation }) => {
 
     const similarMovie = useSelector(state => state.similarMovies.dataSimilarMovies);
 
+    const keyVideo = useSelector(state=> state.video.keyVideo);
+
     useEffect(() => {
         const backAction = () => {
             navigation.navigate('Home');
-          return true;
+            return true;
         };
-    
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
-    
-        return () => backHandler.remove();
-      }, []);
 
-    function onPressBackButton(){
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
+    function onPressBackButton() {
         navigation.navigate('Home');
     }
 
-    function onPressRelatedMovie(item){
-        navigation.push('Detail',{item});
+    function onPressRelatedMovie(item) {
+        navigation.push('Detail', { item });
     }
 
     return (
         <View>
-            {similarMovie.length < 0 ? <Loading /> :
+            {(similarMovie.length < 0 && video.length < 0) ? <Loading /> :
                 <ScrollView
                     overScrollMode='never'
                     showsVerticalScrollIndicator={false}
                 >
-                    <Video item={item} onPressBackButton={onPressBackButton} />
+                    <VideoMovie item={item} keyVideo={keyVideo} onPressBackButton={onPressBackButton} />
                     <View style={styles.containerDetail} >
                         <Text style={styles.title}>{item.title}</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -72,7 +73,6 @@ const Screen = ({ item, navigation }) => {
                             <Text style={styles.textGray}>{item.vote_average} (IMDb)</Text>
                         </View>
                         <View style={styles.dash}></View>
-
 
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <View style={{ flex: 0.4 }}>
@@ -95,7 +95,13 @@ const Screen = ({ item, navigation }) => {
 
                         <Text style={styles.section}>Synopsis</Text>
 
-                        <Text style={styles.textGray}>{item.overview}</Text>
+                        <View>
+                            <Text numberOfLines={3} style={styles.textGray}>{item.overview}</Text>
+                            <TouchableOpacity>
+                                <Text style={{color:COLORS.white}}>Read more</Text>
+                            </TouchableOpacity>
+                        </View>
+
 
                         <View style={styles.dash}></View>
 
@@ -116,7 +122,7 @@ const Screen = ({ item, navigation }) => {
 const Detail = ({ item, navigation, onPressBack }) => {
     return (
         <Provider store={store}>
-            <Screen item={item} navigation={navigation}/>
+            <Screen item={item} navigation={navigation} />
         </Provider>
     )
 }
@@ -152,7 +158,7 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         fontSize: 20,
         marginBottom: 10
-    }
+    },
 });
 
 export default Detail;
