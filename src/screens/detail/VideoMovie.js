@@ -7,39 +7,32 @@ import { GOOGLE_API_KEY } from '../../connection/ApiKey';
 
 const VideoMovie = ({ keyVideo, navigation }) => {
 
-  // const image_source = `${URL_IMG}/w500${item.poster_path}`;
 
   function onChangeState(state) {
-    switch (state.state) {
-      case 'playing':
-        console.log('isPlaying');
-        break;
-      case 'buffering':
-        console.log('buffering');
-        break;
-      default:
-        console.log('defautl');
-        break;
-    }
+    console.log(state);
   }
 
   return (
+    <View>
+
       <YouTube
         apiKey={GOOGLE_API_KEY}
         videoId={keyVideo} // The YouTube video ID
-        loop={false} // control whether the video should loop when ended
         onError={e => console.log('ERROR', e)}
         onChangeState={onChangeState}
         controls={1}
+        loop={true}
         style={styles.video}
       />
+
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   video: {
     alignSelf: 'stretch',
-    height: 300 
+    height: 300
   },
   icon: {
     position: 'absolute',
