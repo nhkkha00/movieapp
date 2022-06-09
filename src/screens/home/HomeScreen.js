@@ -9,6 +9,8 @@ import COLORS from '../../colors';
 import TabBar from './TabBar';
 import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';
+import axios from 'axios';
+import { GET_URL_VIDEO } from '../../connection/MethodApi';
 
 const Screen = ({ navigation }) => {
 
@@ -27,13 +29,14 @@ const Screen = ({ navigation }) => {
   }
 
   //click on item movie
-  function onTouchMovie(item){
+  async function onTouchMovie(item){
     //get related movie
     dispatch(getSimilarMovies(item.id));
-    //load url video
-    dispatch(getVideoMovie(item.id));
-    
-    navigation.navigate('Detail',{item});
+    const res = await axios.get(GET_URL_VIDEO(item.id));
+    navigation.navigate('Detail',{
+      item,
+      keyVideo: res.data.results[0].key
+      });
   }
 
   //loading genres
