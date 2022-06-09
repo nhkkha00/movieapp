@@ -3,9 +3,21 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import COLORS from '../../colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
-import GenreItem from './GenreItem';
 
-const Description = ({ item, genres }) => {
+
+
+
+const GenreItem = ({ name }) => {
+
+    return (
+        <View style={styles.containerGenresItem}>
+            <Text style={{ color: COLORS.white, margin: 10 }}>{name}</Text>
+        </View>
+    );
+}
+
+
+const Description = ({ item,runtime, genres }) => {
 
     return (
         <View style={styles.container}>
@@ -15,7 +27,7 @@ const Description = ({ item, genres }) => {
                     <View style={styles.iconSmall}>
                         <Ionicons name='time-outline' color={COLORS.gray} size={20} />
                     </View>
-                    <Text style={styles.textGray}>152 mins</Text>
+                    <Text style={styles.textGray}>{runtime} mins</Text>
                     <View style={styles.iconSmall}>
                         <Ionicons name='star' color={COLORS.gray} size={20} />
                     </View>
@@ -61,8 +73,8 @@ const Description = ({ item, genres }) => {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:COLORS.mainBg
+    container: {
+        backgroundColor: COLORS.mainBg
     },
     containerDetail: {
         margin: 10
@@ -95,6 +107,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 10
     },
+    containerGenresItem: {
+        flexDirection: "row",
+        alignSelf: "flex-start",
+        backgroundColor: COLORS.gray3,
+        borderRadius: 50,
+        paddingLeft: 5,
+        paddingRight: 5,
+        margin: 5
+    }
 });
 
 export default Description;

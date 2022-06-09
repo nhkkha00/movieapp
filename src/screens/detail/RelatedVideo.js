@@ -34,7 +34,7 @@ const VideoItem = ({ item, onPressRelatedMovie }) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPressRelatedMovie}>
-      <Image style={styles.image} resizeMode='stretch' source={{ uri: image_source }} />
+      <Image style={styles.image} resizeMode='cover' source={{ uri: image_source }} />
       <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
   )

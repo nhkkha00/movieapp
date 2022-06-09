@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Text,ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
 import COLORS from '../../colors';
 import VideoMovie from './VideoMovie';
@@ -11,7 +11,10 @@ import { GET_URL_VIDEO } from '../../connection/MethodApi';
 
 
 const Screen = ({ route, navigation }) => {
-  const { item, keyVideo } = route.params;
+
+  const [ref, setRef] = useState();
+
+  const { item,runtime, keyVideo } = route.params;
 
   const genres = useSelector(state => state.genres.dataGenres);
 
@@ -19,23 +22,27 @@ const Screen = ({ route, navigation }) => {
 
   async function onPressRelatedMovie(item) {
     const res = await axios.get(GET_URL_VIDEO(item.id));
-    navigation.navigate('Detail',{
+    navigation.navigate('Detail', {
       item,
       keyVideo: res.data.results[0].key
-      });
-  } 
+    });
+    ref.scrollTo({
+      x: 0,
+      y: 0,
+      animated: true
+    });
+  }
 
   return (
-    <View>
-      <ScrollView
-        overScrollMode='never'
-        showsVerticalScrollIndicator={false}
-      >
-        <VideoMovie keyVideo={keyVideo}/>
-        <Description item={item} genres={genres} />
-        <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
-      </ScrollView>
-    </View>
+    <ScrollView
+      ref={(ref => setRef(ref))}
+      overScrollMode='never'
+      showsVerticalScrollIndicator={false}
+    >
+      <VideoMovie keyVideo={keyVideo} />
+      <Description item={item} runtime={runtime} genres={genres} />
+      <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
+    </ScrollView>
   )
 }
 
@@ -53,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.mainBg
-  }
+  },
 });
 
 export default DetailScreen;

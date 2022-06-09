@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, FlatList,Animated } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Animated } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import Title from './Title';
@@ -10,7 +10,7 @@ import TabBar from './TabBar';
 import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';
 import axios from 'axios';
-import { GET_URL_VIDEO } from '../../connection/MethodApi';
+import { GET_URL_DETAIL_MOVIE, GET_URL_VIDEO } from '../../connection/MethodApi';
 
 const Screen = ({ navigation }) => {
 
@@ -20,23 +20,25 @@ const Screen = ({ navigation }) => {
 
   const movies = useSelector(state => state.movies.dataMovies);
 
-  const [loading,setLoading] = useState(false);  
+  const [loading, setLoading] = useState(false);
 
   //tab genres click
-  function onTabPress(item){
+  function onTabPress(item) {
     setLoading(true);
     dispatch(getMovies(item.id));
   }
 
   //click on item movie
-  async function onTouchMovie(item){
+  async function onTouchMovie(item) {
     //get related movie
     dispatch(getSimilarMovies(item.id));
-    const res = await axios.get(GET_URL_VIDEO(item.id));
-    navigation.navigate('Detail',{
+    const resVideo = await axios.get(GET_URL_VIDEO(item.id));
+    const resTime = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
+    navigation.navigate('Detail', {
       item,
-      keyVideo: res.data.results[0].key
-      });
+      runtime: resTime.data.runtime,
+      keyVideo: resVideo.data.results[0].key
+    });
   }
 
   //loading genres
@@ -44,35 +46,35 @@ const Screen = ({ navigation }) => {
     if (genres.length > 0) {
       setLoading(false);
       dispatch(getMovies(genres[0].id));
-    }else{
+    } else {
       setLoading(true);
     }
-  },[genres])
+  }, [genres])
 
   //loading movies
-  useEffect(()=>{
+  useEffect(() => {
     if (movies.length > 0) {
       setLoading(false);
-    }else{
+    } else {
       setLoading(true);
     }
-  },[movies]);
+  }, [movies]);
 
   return (
     <View style={styles.container}>
       <Title />
       <SearchBar />
-      <TabBar data={genres} onTabPress={onTabPress}/>
-      { loading ? <Loading /> : <ListMovies data={movies} onTouchMovie={onTouchMovie} />}
+      <TabBar data={genres} onTabPress={onTabPress} />
+      {loading ? <Loading /> : <ListMovies data={movies} onTouchMovie={onTouchMovie} />}
     </View >
   );
 }
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   return (
     <Provider store={store}>
-      <Screen navigation={navigation}/>
+      <Screen navigation={navigation} />
     </Provider>
   )
 }
