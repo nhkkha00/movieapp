@@ -17,7 +17,7 @@ const GenreItem = ({ name }) => {
 }
 
 
-const Description = ({ item, genres }) => {
+const Description = ({ item,runtime, genres }) => {
 
     return (
         <View style={styles.container}>
@@ -27,7 +27,7 @@ const Description = ({ item, genres }) => {
                     <View style={styles.iconSmall}>
                         <Ionicons name='time-outline' color={COLORS.gray} size={20} />
                     </View>
-                    <Text style={styles.textGray}>152 mins</Text>
+                    <Text style={styles.textGray}>{runtime} mins</Text>
                     <View style={styles.iconSmall}>
                         <Ionicons name='star' color={COLORS.gray} size={20} />
                     </View>

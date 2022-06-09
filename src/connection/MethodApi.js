@@ -19,4 +19,8 @@ export const GET_URL_SIMILAR_MOVIE = (id)=>{
     return `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`;
 }
 
+export const GET_URL_DETAIL_MOVIE = (id)=>{
+    return `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
+}
+
 export const URL_VIDEO = 'https://www.youtube.com/watch?v=';

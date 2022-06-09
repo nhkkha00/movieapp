@@ -14,7 +14,7 @@ const Screen = ({ route, navigation }) => {
 
   const [ref, setRef] = useState();
 
-  const { item, keyVideo } = route.params;
+  const { item,runtime, keyVideo } = route.params;
 
   const genres = useSelector(state => state.genres.dataGenres);
 
@@ -40,7 +40,7 @@ const Screen = ({ route, navigation }) => {
       showsVerticalScrollIndicator={false}
     >
       <VideoMovie keyVideo={keyVideo} />
-      <Description item={item} genres={genres} />
+      <Description item={item} runtime={runtime} genres={genres} />
       <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
     </ScrollView>
   )
