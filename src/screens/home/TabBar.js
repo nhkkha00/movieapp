@@ -5,7 +5,6 @@ import Tab from './Tab';
 
 const TabBar = ({ data, onTabPress }) => {
 
-
     const [selectItem, setSelectItem] = useState(0);
 
     return (
@@ -18,21 +17,24 @@ const TabBar = ({ data, onTabPress }) => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => {
 
-                    let color = COLORS.orange;
+                    let textColor = COLORS.orange;
 
-                    if (index !== selectItem) color = COLORS.white;
+                    if (index !== selectItem) {
+                        textColor = COLORS.white;
+                    }
 
                     return (
-                        <Tab item={item}
-                            colorSelect={color}
-                            onTabPress={() => {
-                                setSelectItem(index);
-                                onTabPress(item);
-                            }} />
+                        <View>
+                            <Tab item={item}
+                                colorSelect={textColor}
+                                onTabPress={() => {
+                                    setSelectItem(index);
+                                    onTabPress(item);
+                                }} />
+                        </View>
                     )
                 }}
             />
-
         </View>
     );
 }

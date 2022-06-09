@@ -5,14 +5,14 @@ import { useDispatch } from 'react-redux';
 import COLORS from '../../colors';
 import { GET_SIMILAR_MOVIE, URL_IMG } from '../../connection/MethodApi';
 
-const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie }) => {
+const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie}) => {
 
 
   //filter item already show
   const dataFilter = data.filter(v=>v.id!==itemVideo.id);
 
   return (
-    <View>
+    <View style={{backgroundColor:COLORS.mainBg}}>
       <FlatList
         overScrollMode='never'
         data={dataFilter}
@@ -42,7 +42,7 @@ const VideoItem = ({ item, onPressRelatedMovie }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10
+    margin:10
   },
   image: {
     width: 160,

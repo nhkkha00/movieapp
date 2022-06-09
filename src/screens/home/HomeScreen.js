@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, FlatList,Animated } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import Title from './Title';
 import store from '../../redux/store';
-import { getGenres, getMovies, getSimilarMovies } from '../../redux/actions';
+import { getGenres, getMovies, getSimilarMovies, getVideoMovie } from '../../redux/actions';
 import COLORS from '../../colors';
 import TabBar from './TabBar';
 import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';
+import axios from 'axios';
+import { GET_URL_VIDEO } from '../../connection/MethodApi';
 
 const Screen = ({ navigation }) => {
 
@@ -18,18 +20,23 @@ const Screen = ({ navigation }) => {
 
   const movies = useSelector(state => state.movies.dataMovies);
 
-  const [loading,setLoading] = useState(false);
+  const [loading,setLoading] = useState(false);  
 
   //tab genres click
-  function onTabPress(item) {
+  function onTabPress(item){
     setLoading(true);
     dispatch(getMovies(item.id));
   }
 
   //click on item movie
-  function onTouchMovie(item){
+  async function onTouchMovie(item){
+    //get related movie
     dispatch(getSimilarMovies(item.id));
-    navigation.navigate('Detail',{item});
+    const res = await axios.get(GET_URL_VIDEO(item.id));
+    navigation.navigate('Detail',{
+      item,
+      keyVideo: res.data.results[0].key
+      });
   }
 
   //loading genres
@@ -55,7 +62,7 @@ const Screen = ({ navigation }) => {
     <View style={styles.container}>
       <Title />
       <SearchBar />
-      <TabBar data={genres} onTabPress={onTabPress} />
+      <TabBar data={genres} onTabPress={onTabPress}/>
       { loading ? <Loading /> : <ListMovies data={movies} onTouchMovie={onTouchMovie} />}
     </View >
   );

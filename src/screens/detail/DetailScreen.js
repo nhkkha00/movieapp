@@ -1,16 +1,51 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text,ScrollView } from 'react-native';
+import { Provider, useSelector } from 'react-redux';
 import COLORS from '../../colors';
-import Detail from './Detail';
+import VideoMovie from './VideoMovie';
+import store from '../../redux/store';
+import Description from './Desciption';
+import RelatedVideo from './RelatedVideo';
+import axios from 'axios';
+import { GET_URL_VIDEO } from '../../connection/MethodApi';
+
+
+const Screen = ({ route, navigation }) => {
+  const { item, keyVideo } = route.params;
+
+  const genres = useSelector(state => state.genres.dataGenres);
+
+  const similarMovie = useSelector(state => state.similarMovies.dataSimilarMovies);
+
+  async function onPressRelatedMovie(item) {
+    const res = await axios.get(GET_URL_VIDEO(item.id));
+    navigation.navigate('Detail',{
+      item,
+      keyVideo: res.data.results[0].key
+      });
+  } 
+
+  return (
+    <View>
+      <ScrollView
+        overScrollMode='never'
+        showsVerticalScrollIndicator={false}
+      >
+        <VideoMovie keyVideo={keyVideo}/>
+        <Description item={item} genres={genres} />
+        <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
+      </ScrollView>
+    </View>
+  )
+}
+
 
 const DetailScreen = ({ route, navigation }) => {
 
-  const { item } = route.params;
-
   return (
-    <View style={styles.container}>
-        <Detail item={item} navigation={navigation} />
-    </View>
+    <Provider store={store}>
+      <Screen route={route} navigation={navigation} />
+    </Provider>
   );
 }
 

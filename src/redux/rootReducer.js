@@ -4,10 +4,11 @@ import reducerMovies from "./reducer/reducerMovies";
 import reducerSimilarMovies from "./reducer/reducersSimilarMovies";
 
 
+
 const rootReducer = combineReducers({
     genres: reducerGenres,
     movies: reducerMovies,
-    similarMovies : reducerSimilarMovies
+    similarMovies : reducerSimilarMovies,
 });
 
 export default rootReducer;
