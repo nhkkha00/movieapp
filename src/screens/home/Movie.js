@@ -9,7 +9,7 @@ const Movie = ({ item, width, height, marginTop, onTouchMovie }) => {
     const image_source = `${URL_IMG}/w200${item.poster_path}`;
 
     return (
-        <TouchableOpacity onPress={onTouchMovie}>
+        <TouchableOpacity activeOpacity={.7} onPress={onTouchMovie}>
             <Image style={{
                 width: width,
                 height: height,

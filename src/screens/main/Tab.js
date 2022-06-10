@@ -9,6 +9,7 @@ const Tab = ({ text, active, onTouch }) => {
   return (
     
     <TouchableOpacity
+    activeOpacity={.7}
             style={{
                 width: 60,
                 height: 60,
