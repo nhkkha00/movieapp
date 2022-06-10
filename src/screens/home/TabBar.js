@@ -17,7 +17,7 @@ const TabBar = ({ data, onTabPress }) => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => {
 
-                    let textColor = COLORS.orange;
+                    let textColor = COLORS.pink;
 
                     if (index !== selectItem) {
                         textColor = COLORS.white;
