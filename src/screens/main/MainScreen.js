@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { View, StyleSheet,BackHandler } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import HomeScreen from '../home/HomeScreen'
 import FavScreen from '../fav/FavScreen';
 import COLORS from '../../colors';
@@ -19,20 +19,6 @@ const Screen = () => {
 
   const genres = useSelector(state => state.genres.dataGenres);
 
-  useEffect(() => {
-
-    const backAction = () => {
-      BackHandler.exitApp();
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
 
   useEffect(() => {

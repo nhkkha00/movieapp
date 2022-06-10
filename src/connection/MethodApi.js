@@ -11,16 +11,12 @@ export const GET_URL_MOVIES_BY_ID_GENRE = (id) => {
 
 export const URL_IMG = 'https://image.tmdb.org/t/p';
 
-export const GET_URL_VIDEO = (id)=>{
-    return `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`;
-}
-
 export const GET_URL_SIMILAR_MOVIE = (id)=>{
-    return `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`;
+    return `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=en-US`;
 }
 
 export const GET_URL_DETAIL_MOVIE = (id)=>{
-    return `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
+    return `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=videos`;
 }
 
 export const URL_VIDEO = 'https://www.youtube.com/watch?v=';
