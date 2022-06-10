@@ -12,6 +12,7 @@ const ListMovies = ({ data, onTouchMovie }) => {
             <FlatList
                 overScrollMode='never'
                 numColumns={numColums}
+                showsVerticalScrollIndicator={false}
                 data={data}
                 renderItem={({ item, index }) => {
                     let width = 170;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {put, takeLatest,takeEvery} from 'redux-saga/effects'
-import { GET_URL_ALL_GENRES, GET_URL_MOVIES_BY_ID_GENRE, GET_URL_SIMILAR_MOVIE, GET_URL_VIDEO } from "../connection/MethodApi";
+import { GET_URL_ALL_GENRES, GET_URL_MOVIES_BY_ID_GENRE, GET_URL_SIMILAR_MOVIE } from "../connection/MethodApi";
 import {updateGenres,getMovies, GET_GENRES, GET_MOVIES, updateMovies, updateSimilarMovies, GET_SIMILAR_MOVIES, updateVideoMovie} from './actions';
 
 

@@ -10,7 +10,7 @@ import TabBar from './TabBar';
 import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';
 import axios from 'axios';
-import { GET_URL_DETAIL_MOVIE, GET_URL_VIDEO } from '../../connection/MethodApi';
+import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
 
 const Screen = ({ navigation }) => {
 
@@ -32,13 +32,9 @@ const Screen = ({ navigation }) => {
   async function onTouchMovie(item) {
     //get related movie
     dispatch(getSimilarMovies(item.id));
-    const resVideo = await axios.get(GET_URL_VIDEO(item.id));
-    const resTime = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
-    navigation.navigate('Detail', {
-      item,
-      runtime: resTime.data.runtime,
-      keyVideo: resVideo.data.results[0].key
-    });
+
+    const resVideo = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
+    navigation.navigate('Detail', {item});
   }
 
   //loading genres
