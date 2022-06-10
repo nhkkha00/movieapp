@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 import Title from './Title';
 import store from '../../redux/store';
 import { getGenres, getMovies, getSimilarMovies, getVideoMovie } from '../../redux/actions';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import TabBar from './TabBar';
 import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';

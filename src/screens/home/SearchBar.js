@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const SearchBar = () => {
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     },
     inputText:{
         color:COLORS.gray,
+        fontFamily:'lato_regular'
     }
 });
 

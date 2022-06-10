@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, BackHandler } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import VideoMovie from './VideoMovie';
 import store from '../../redux/store';
 import Description from './Desciption';
@@ -92,7 +92,7 @@ const Screen = ({ route, navigation }) => {
               alignItems: 'center',
               backgroundColor: COLORS.mainBg
             }}>
-              <Text style={{ color: COLORS.white }}>This video is not available</Text>
+              <Text style={{ color: COLORS.white, fontFamily:'lato_regular' }}>This video is not available</Text>
             </View>
             :
             <VideoMovie
@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textVideo: {
-    color: COLORS.white
+    color: COLORS.white,
+    fontFamily:'lato_regular'
   }
 });
 

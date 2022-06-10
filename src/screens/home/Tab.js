@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 
 const Tab = ({ item, onTabPress, colorSelect }) => {
 
@@ -13,7 +13,8 @@ const Tab = ({ item, onTabPress, colorSelect }) => {
                 marginTop: 10,
                 marginLeft: 20,
                 marginRight: 20,
-                marginBottom: 10
+                marginBottom: 10,
+                fontFamily:'lato_regular'
             }}>{item.name}</Text>
         </TouchableOpacity>
 

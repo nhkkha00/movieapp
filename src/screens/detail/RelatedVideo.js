@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import { GET_SIMILAR_MOVIE, URL_IMG } from '../../connection/MethodApi';
 
 const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie}) => {
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     marginTop:10,
     textAlign: 'auto',
+    fontFamily:'lato_regular'
   }
 });
 
