@@ -6,7 +6,7 @@ const Tab = ({ item, onTabPress, colorSelect }) => {
 
     return (
 
-        <TouchableOpacity style={styles.container} onPress={onTabPress}>
+        <TouchableOpacity activeOpacity={.7} style={styles.container} onPress={onTabPress}>
             <Text style={{
                 color: colorSelect,
                 fontSize: 18,

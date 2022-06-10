@@ -33,7 +33,7 @@ const VideoItem = ({ item, onPressRelatedMovie }) => {
   const image_source = `${URL_IMG}/w200${item.poster_path}`
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPressRelatedMovie}>
+    <TouchableOpacity activeOpacity={.7} style={styles.container} onPress={onPressRelatedMovie}>
       <Image style={styles.image} resizeMode='cover' source={{ uri: image_source }} />
       <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
     </TouchableOpacity>

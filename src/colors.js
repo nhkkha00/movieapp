@@ -1,11 +1,13 @@
 const COLORS = {
     mainBg:'#15141F',
-    orange:'#FF8F71',
+    pink:'#FF8F71',
     white:'#FFFFFF',
     gray:'#BBBBBB',
     gray2:'#DADADA',
     gray3:'#515151',
+    gray4:'#C4C4C4',
     black:'#211F30',
+    red:'#FF1700',
     transparent:'transparent'
 }
 

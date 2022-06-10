@@ -58,7 +58,7 @@ const Description = ({ item,runtime, genres }) => {
 
                 <View>
                     <Text numberOfLines={3} style={styles.textGray}>{item.overview}</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.7}>
                         <Text style={{ color: COLORS.white }}>Read more</Text>
                     </TouchableOpacity>
                 </View>

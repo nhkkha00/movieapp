@@ -22,6 +22,7 @@ const Screen = () => {
 
 
   useEffect(() => {
+    //get tab before render
     dispatch(getGenres());
   }, [])
 
