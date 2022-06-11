@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import Tab from './Tab';
 
 const TabBottom = ({ state, descriptors, navigation }) => {

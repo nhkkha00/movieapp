@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { View, StyleSheet, Easing, Animated } from 'react-native';
-import COLORS from '../colors';
+import COLORS from '../res/color/colors';
 import DetailScreen from './detail/DetailScreen';
 import MainScreen from './main/MainScreen';
 
@@ -10,10 +10,10 @@ import MainScreen from './main/MainScreen';
 const Stack = createStackNavigator();
 
 const RootStack = () => {
-  
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Main' screenOptions={{ 
+      <Stack.Navigator initialRouteName='Main' screenOptions={{
         headerShown: false,
         ...TransitionPresets.SlideFromRightIOS
       }}
@@ -25,7 +25,12 @@ const RootStack = () => {
         <Stack.Screen
           name='Detail'
           component={DetailScreen}
-        
+          options={{
+            //set height 0 instead hide (over view)
+            headerStyle: {
+              height: 0
+            }
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:COLORS.mainBg
+    backgroundColor: COLORS.mainBg
   }
 });
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import Tab from './Tab';
 
 const TabBar = ({ data, onTabPress }) => {

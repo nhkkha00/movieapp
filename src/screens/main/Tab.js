@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import Foundation from 'react-native-vector-icons/Foundation'
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet,Text } from 'react-native';
-
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const FavScreen = () => {
 
   return (
     <View style={styles.container}>
-
+      
     </View>
   );
 }

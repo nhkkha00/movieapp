@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, BackHandler } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import VideoMovie from './VideoMovie';
 import store from '../../redux/store';
-import Description from './Desciption';
+import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
 import axios from 'axios';
 import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
@@ -44,14 +44,14 @@ const Screen = ({ route, navigation }) => {
     navigation.push('Detail', { item });
   }
 
-  async function getDataVideo(){
+  async function getDataVideo() {
     const resVideo = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
 
     //don't have videos trailer
-    if(resVideo.data.videos.results.length === 0){
+    if (resVideo.data.videos.results.length === 0) {
       setVideoDeleted(true);
       setUrlVideo('Deleted');
-    }else{
+    } else {
       setUrlVideo(resVideo.data.videos.results[0].key);
     }
     setTimeDur(resVideo.data.runtime);
@@ -60,7 +60,7 @@ const Screen = ({ route, navigation }) => {
 
   useEffect(() => {
     getDataVideo();
-  },[])
+  }, [])
 
   const [videoDeleted, setVideoDeleted] = useState(false);
 
@@ -73,9 +73,8 @@ const Screen = ({ route, navigation }) => {
     if (e.error === "NOT_PLAYABLE") {
       setVideoDeleted(true);
     }
+    console.log(e);
   }
-
-
 
   return (
     <View style={styles.container}>
@@ -100,7 +99,7 @@ const Screen = ({ route, navigation }) => {
               onErrorVideo={onErrorVideo}
               onReady={onReady} />
           }
-          <Description item={item} runtime={timeDur} genres={genres} />
+          <DescriptionVideo item={item} runtime={timeDur} genres={genres} />
           <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
         </ScrollView>
       }
@@ -135,7 +134,9 @@ const DetailScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: COLORS.mainBg
   },
   deleteVideo: {
@@ -146,7 +147,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textVideo: {
-    color: COLORS.white
+    color: COLORS.white,
+    fontFamily: 'lato_regular'
   }
 });
 

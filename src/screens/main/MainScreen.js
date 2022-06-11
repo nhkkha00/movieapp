@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import HomeScreen from '../home/HomeScreen'
 import FavScreen from '../fav/FavScreen';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import TabBottom from './TabBotom';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store';

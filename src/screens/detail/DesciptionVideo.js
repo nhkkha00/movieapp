@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
 
@@ -11,13 +11,17 @@ const GenreItem = ({ name }) => {
 
     return (
         <View style={styles.containerGenresItem}>
-            <Text style={{ color: COLORS.white, margin: 10 }}>{name}</Text>
+            <Text style={{ color: COLORS.white, margin: 10, fontFamily: 'lato_regular' }}>{name}</Text>
         </View>
     );
 }
 
 
-const Description = ({ item,runtime, genres }) => {
+const DescriptionVideo = ({ item, runtime, genres }) => {
+
+    const [num, setNumLine] = useState(3);
+
+    const [visibility, setVisibility] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -55,13 +59,19 @@ const Description = ({ item,runtime, genres }) => {
                 <View style={styles.dash}></View>
 
                 <Text style={styles.section}>Synopsis</Text>
+                <Text numberOfLines={num} style={styles.textGray}>{item.overview}</Text>
+                {
+                    visibility ? <View></View> :
+                        <View>
+                            <TouchableOpacity disabled={visibility} activeOpacity={.7} onPress={() => {
+                                setVisibility(true);
+                                setNumLine(15);
+                            }}>
+                                <Text style={{ color: COLORS.white, fontFamily: 'lato_regular' }}>Read more</Text>
+                            </TouchableOpacity>
+                        </View>
+                }
 
-                <View>
-                    <Text numberOfLines={3} style={styles.textGray}>{item.overview}</Text>
-                    <TouchableOpacity activeOpacity={.7}>
-                        <Text style={{ color: COLORS.white }}>Read more</Text>
-                    </TouchableOpacity>
-                </View>
 
                 <View style={styles.dash}></View>
 
@@ -77,19 +87,24 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.mainBg
     },
     containerDetail: {
-        margin: 10
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 10
     },
     title: {
         color: COLORS.white,
         fontSize: 24,
-        lineHeight: 40
+        lineHeight: 40,
+        fontFamily: 'lato_regular'
     },
     textGray: {
         color: COLORS.gray,
         fontSize: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 15
+        marginRight: 15,
+        fontFamily: 'lato_regular',
+        lineHeight: 25
     },
     iconSmall: {
         justifyContent: 'center',
@@ -105,7 +120,8 @@ const styles = StyleSheet.create({
     section: {
         color: COLORS.white,
         fontSize: 20,
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: 'lato_regular'
     },
     containerGenresItem: {
         flexDirection: "row",
@@ -118,4 +134,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Description;
+export default DescriptionVideo;

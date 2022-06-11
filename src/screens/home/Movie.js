@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import COLORS from '../../colors';
+import COLORS from '../../res/color/colors';
 import { URL_IMG } from '../../connection/MethodApi';
 
 const Movie = ({ item, width, height, marginTop, onTouchMovie }) => {
@@ -26,6 +26,7 @@ const Movie = ({ item, width, height, marginTop, onTouchMovie }) => {
                 color: COLORS.white,
                 marginLeft: 10,
                 textAlign: 'auto',
+                fontFamily:'lato_regular'
             }}>
                 {item.title}
             </Text>
