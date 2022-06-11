@@ -5,14 +5,14 @@ import { useDispatch } from 'react-redux';
 import COLORS from '../../res/color/colors';
 import { GET_SIMILAR_MOVIE, URL_IMG } from '../../connection/MethodApi';
 
-const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie}) => {
+const RelatedVideo = ({ data, itemVideo, onPressRelatedMovie }) => {
 
 
   //filter item already show
-  const dataFilter = data.filter(v=>v.id!==itemVideo.id);
+  const dataFilter = data.filter(v => v.id !== itemVideo.id);
 
   return (
-    <View style={{backgroundColor:COLORS.mainBg}}>
+    <View style={styles.container}>
       <FlatList
         overScrollMode='never'
         data={dataFilter}
@@ -33,7 +33,7 @@ const VideoItem = ({ item, onPressRelatedMovie }) => {
   const image_source = `${URL_IMG}/w200${item.poster_path}`
 
   return (
-    <TouchableOpacity activeOpacity={.7} style={styles.container} onPress={onPressRelatedMovie}>
+    <TouchableOpacity style={styles.item} activeOpacity={.7} onPress={onPressRelatedMovie}>
       <Image style={styles.image} resizeMode='cover' source={{ uri: image_source }} />
       <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
@@ -42,7 +42,8 @@ const VideoItem = ({ item, onPressRelatedMovie }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin:10
+    margin: 10,
+    backgroundColor: COLORS.mainBg
   },
   image: {
     width: 160,
@@ -52,9 +53,13 @@ const styles = StyleSheet.create({
   title: {
     width: 150,
     color: COLORS.white,
-    marginTop:10,
+    marginTop: 10,
     textAlign: 'auto',
-    fontFamily:'lato_regular'
+    fontFamily: 'lato_regular'
+  },
+  item:{
+    marginLeft:8,
+    marginRight:8
   }
 });
 

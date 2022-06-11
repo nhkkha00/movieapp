@@ -12,25 +12,24 @@ const VideoMovie = ({ keyVideo, onReady, onErrorVideo }) => {
   }
 
   return (
-    <View style={{width:'100%',height:300}}>
-      <YouTube
-        apiKey={GOOGLE_API_KEY}
-        videoId={keyVideo} // The YouTube video ID
-        onError={onErrorVideo}
-        onReady={onReady}
-        onChangeState={onChangeState}
-        controls={1}
-        loop={true}
-        style={styles.video}
-      />
-    </View>
+        <YouTube
+          apiKey={GOOGLE_API_KEY}
+          videoId={keyVideo} // The YouTube video ID
+          onError={onErrorVideo}
+          onReady={onReady}
+          onChangeState={onChangeState}
+          controls={1}
+          loop={true}
+          fullscreen={false}
+          style={styles.video}
+        />
   );
 }
 
 const styles = StyleSheet.create({
   video: {
     alignSelf: 'stretch',
-    height: '100%',
+    height: 300
   },
 });
 
