@@ -7,7 +7,7 @@ import store from '../../redux/store';
 import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
 import axios from 'axios';
-import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
+import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_VIDEO_MOVIE } from '../../connection/MethodApi';
 import { getSimilarMovies } from '../../redux/actions';
 import Loading from '../../components/Loading';
 
@@ -29,11 +29,13 @@ const Screen = ({ route, navigation }) => {
 
   const [urlVideo, setUrlVideo] = useState('');
 
-  const [timeDur, setTimeDur] = useState('');
-
   const genres = useSelector(state => state.genres.dataGenres);
 
   const similarMovie = useSelector(state => state.similarMovies.dataSimilarMovies);
+
+  const [movie,setMovie] = useState(''); 
+
+  const [cast,setCast] = useState([]);
 
   async function onPressRelatedMovie(item) {
     // ref.scrollTo({
@@ -44,22 +46,24 @@ const Screen = ({ route, navigation }) => {
     navigation.push('Detail', { item });
   }
 
-  async function getDataVideo() {
-    const resVideo = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
-
+  async function getDataMovie() {
+    const resMovie = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
+    const resVideo = await axios.get(GET_URL_VIDEO_MOVIE(item.id));
+    const resCast = await axios.get(GET_URL_CAST_CREW(item.id));
     //don't have videos trailer
-    if (resVideo.data.videos.results.length === 0) {
+    if (resVideo.data.results.length === 0) {
       setVideoDeleted(true);
       setUrlVideo('Deleted');
     } else {
-      setUrlVideo(resVideo.data.videos.results[0].key);
+      setUrlVideo(resVideo.data.results[0].key);
     }
-    setTimeDur(resVideo.data.runtime);
+    setCast(resCast.data.cast);
+    setMovie(resMovie.data);
     dispatch(getSimilarMovies(item.id));
   }
 
   useEffect(() => {
-    getDataVideo();
+    getDataMovie();
   }, [])
 
   const [videoDeleted, setVideoDeleted] = useState(false);
@@ -76,34 +80,33 @@ const Screen = ({ route, navigation }) => {
     console.log(e);
   }
 
+  if (urlVideo === '' || cast.length === 0) return <Loading />;
   return (
     <View style={styles.container}>
-      {urlVideo === '' || timeDur === '' ? <Loading /> :
-        <ScrollView
-          ref={(ref => setRef(ref))}
-          overScrollMode='never'
-          showsVerticalScrollIndicator={false}
-        >
-          {videoDeleted ?
-            <View style={{
-              height: 300,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: COLORS.mainBg
-            }}>
-              <Text style={{ color: COLORS.white }}>This video is not available</Text>
-            </View>
-            :
-            <VideoMovie
-              keyVideo={urlVideo}
-              onErrorVideo={onErrorVideo}
-              onReady={onReady} />
-          }
-          <DescriptionVideo item={item} runtime={timeDur} genres={genres} />
-          <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
-        </ScrollView>
+      {videoDeleted ?
+        <View style={{
+          height: 300,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: COLORS.mainBg
+        }}>
+          <Text style={{ color: COLORS.white }}>This video is not available</Text>
+        </View>
+        :
+        <VideoMovie
+          keyVideo={urlVideo}
+          onErrorVideo={onErrorVideo}
+          onReady={onReady} />
       }
-    </View>
+      <ScrollView
+        ref={(ref => setRef(ref))}
+        overScrollMode='never'
+        showsVerticalScrollIndicator={false}
+      >
+        <DescriptionVideo item={item} cast={cast} runtime={movie.runtime} genres={genres} />
+        <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
+      </ScrollView>
+    </View >
   )
 }
 
@@ -134,7 +137,7 @@ const DetailScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.mainBg

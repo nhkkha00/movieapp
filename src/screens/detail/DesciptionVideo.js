@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import COLORS from '../../res/color/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { convertDateToString } from '../../utilities/convertDate';
+import { URL_IMG } from '../../connection/MethodApi';
 
 
 
@@ -17,11 +18,13 @@ const GenreItem = ({ name }) => {
 }
 
 
-const DescriptionVideo = ({ item, runtime, genres }) => {
+const DescriptionVideo = ({ item, cast, runtime, genres }) => {
 
-    const [num, setNumLine] = useState(3);
+    const [num, setNumLine] = useState(2);
 
     const [visibility, setVisibility] = useState(false);
+
+    const castLess = cast.slice(0, 3);
 
     return (
         <View style={styles.container}>
@@ -42,7 +45,7 @@ const DescriptionVideo = ({ item, runtime, genres }) => {
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <View style={{ flex: 0.4 }}>
                         <Text style={styles.section}>Release date</Text>
-                        <Text style={styles.textGray}>{convertDateToString(item.release_date)}</Text>
+                        <Text style={styles.textGray}>{item.release_date}</Text>
                     </View>
                     <View style={{ flex: 0.6 }}>
                         <Text style={styles.section}>Genre</Text>
@@ -58,6 +61,28 @@ const DescriptionVideo = ({ item, runtime, genres }) => {
                 </View>
                 <View style={styles.dash}></View>
 
+                <Text style={styles.section}>{`Cast & Crew`}</Text>
+
+                <View style={{ justifyContent: 'space-around', flexWrap: 'wrap', flexDirection: 'row', marginLeft: 5 }}>
+                    {
+                        castLess.map((i) => {
+                            const image_source = `${URL_IMG}/w200${i.profile_path}`;
+                            return (
+                                <View key={i.id} style={styles.imagesContainer}>
+                                    <TouchableOpacity activeOpacity={.7}>
+                                        <Image style={styles.images} resizeMode='contain' source={{ uri: image_source }} />
+                                    </TouchableOpacity>
+                                    <Text numberOfLines={1} style={styles.textCast}>{i.name}</Text>
+                                </View>
+                            )
+                        })
+                    }
+                </View>
+                <TouchableOpacity style={{ alignItems: 'flex-end', marginTop: 10 }} activeOpacity={.7}>
+                    <Text style={styles.showMore}>Show more</Text>
+                </TouchableOpacity>
+                <View style={styles.dash}></View>
+
                 <Text style={styles.section}>Synopsis</Text>
                 <Text numberOfLines={num} style={styles.textGray}>{item.overview}</Text>
                 {
@@ -67,11 +92,10 @@ const DescriptionVideo = ({ item, runtime, genres }) => {
                                 setVisibility(true);
                                 setNumLine(15);
                             }}>
-                                <Text style={{ color: COLORS.white, fontFamily: 'lato_regular' }}>Read more</Text>
+                                <Text style={styles.showMore}>Read more</Text>
                             </TouchableOpacity>
                         </View>
                 }
-
 
                 <View style={styles.dash}></View>
 
@@ -84,12 +108,13 @@ const DescriptionVideo = ({ item, runtime, genres }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.mainBg
+        backgroundColor: COLORS.mainBg,
     },
     containerDetail: {
         marginLeft: 20,
         marginRight: 20,
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 10
     },
     title: {
         color: COLORS.white,
@@ -111,6 +136,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 10
     },
+    showMore: {
+        color: COLORS.white,
+        fontFamily: 'lato_regular',
+        textDecorationLine: 'underline'
+    },
     dash: {
         height: 1,
         backgroundColor: COLORS.gray3,
@@ -131,6 +161,20 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
         margin: 5
+    },
+    images: {
+        width: 100,
+        height: 100,
+        borderRadius: 100,
+    },
+    imagesContainer: {
+        margin: 5
+    },
+    textCast: {
+        color: COLORS.gray2,
+        width: 100,
+        textAlign: 'center',
+        marginTop: 5
     }
 });
 

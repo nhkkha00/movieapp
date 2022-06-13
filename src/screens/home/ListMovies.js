@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, FlatList, Dimensions,Animated } from 'react-native';
 import Movie from './Movie';
 
-const ListMovies = ({ data, onTouchMovie }) => {
+const ListMovies = ({ data,scrollX, onTouchMovie }) => {
 
     const numColums = 2;
 
@@ -14,6 +14,10 @@ const ListMovies = ({ data, onTouchMovie }) => {
                 numColumns={numColums}
                 showsVerticalScrollIndicator={false}
                 data={data}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    { useNativeDriver: false }
+                  )}
                 renderItem={({ item, index }) => {
                     let width = 170;
                     let height = 220;
@@ -40,8 +44,6 @@ const ListMovies = ({ data, onTouchMovie }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 
