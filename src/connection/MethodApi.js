@@ -1,4 +1,5 @@
 
+
 import {API_KEY} from './ApiKey';
 
 export const GET_URL_ALL_GENRES = () => {
@@ -26,5 +27,11 @@ export const GET_URL_VIDEO_MOVIE = (id)=>{
 export const GET_URL_CAST_CREW = (id)=>{
     return `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}&language=en-US`;
 }
+
+export const GET_URL_DETAIL_PERSON = (id)=>{
+    return `https://api.themoviedb.org/3/person/${id}?api_key=${API_KEY}&language=en-US`;
+}
+
+
 
 export const URL_VIDEO = 'https://www.youtube.com/watch?v=';

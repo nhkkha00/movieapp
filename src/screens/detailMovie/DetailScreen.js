@@ -6,27 +6,34 @@ import store from '../../redux/store';
 import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
 import axios from 'axios';
-import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_VIDEO_MOVIE } from '../../connection/MethodApi';
+import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_DETAIL_PERSON, GET_URL_VIDEO_MOVIE } from '../../connection/MethodApi';
 import { getSimilarMovies } from '../../redux/actions';
 import Loading from '../../components/Loading';
 import { GOOGLE_API_KEY } from '../../connection/ApiKey';
 import Youtube from 'react-native-youtube';
-
 import {useDeviceOrientation} from '@react-native-community/hooks'
 
 
-
 const Screen = ({ route, navigation }) => {
+
+  const { itemMovie } = route.params;
 
   const { landscape } = useDeviceOrientation();
 
   const dim = Dimensions.get("screen");
 
+  const directionsScreen =
+  landscape ? { flexDirection: 'row' } : { flexDirection: 'column' };
+
+  const directionsDetail =
+  landscape ? { width: dim.width / 2,height: '100%' } : { alignSelf:'stretch', height:'100%' };
+
+  const directionsVideo =
+  landscape ? { width: dim.width / 2, height:'100%' } : { alignSelf:'stretch',height: 300 };
+
   const dispatch = useDispatch();
 
   const [ref, setRef] = useState();
-
-  const { item } = route.params;
 
   const [urlVideo, setUrlVideo] = useState('');
 
@@ -38,19 +45,37 @@ const Screen = ({ route, navigation }) => {
 
   const [cast, setCast] = useState([]);
 
-  async function onPressRelatedMovie(item) {
+
+  useEffect(() => {
+
+    const backAction = () => {
+      navigation.navigate('Home');
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove();
+    }
+  }, []);
+
+  async function onPressRelatedMovie(itemMovie) {
     // ref.scrollTo({
     //   x: 0,
     //   y: 0,
     //   animated: true
     // });
-    navigation.push('Detail', { item });
+    navigation.push('Detail', { itemMovie });
   }
 
   async function getDataMovie() {
-    const resMovie = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
-    const resVideo = await axios.get(GET_URL_VIDEO_MOVIE(item.id));
-    const resCast = await axios.get(GET_URL_CAST_CREW(item.id));
+    const resMovie = await axios.get(GET_URL_DETAIL_MOVIE(itemMovie.id));
+    const resVideo = await axios.get(GET_URL_VIDEO_MOVIE(itemMovie.id));
+    const resCast = await axios.get(GET_URL_CAST_CREW(itemMovie.id));
     //don't have videos trailer
     if (resVideo.data.results.length === 0) {
       setVideoDeleted(true);
@@ -60,7 +85,7 @@ const Screen = ({ route, navigation }) => {
     }
     setCast(resCast.data.cast);
     setMovie(resMovie.data);
-    dispatch(getSimilarMovies(item.id));
+    dispatch(getSimilarMovies(itemMovie.id));
   }
 
   useEffect(() => {
@@ -85,19 +110,20 @@ const Screen = ({ route, navigation }) => {
 
   }
 
+  async function onCastTouch(id){
+    const resActor = await axios.get(GET_URL_DETAIL_PERSON(id));
+    const actor = resActor.data;
+    const screen = 'Detail';
+    navigation.navigate('DetailCast',{itemMovie, actor, screen});
+  }
 
-  const directionsScreen =
-  landscape ? { flexDirection: 'row' } : { flexDirection: 'column' };
-
-  const directionsDetail =
-  landscape ? { width: dim.width / 2,height: '100%' } : { alignSelf:'stretch', height:'100%' };
-
-  const directionsVideo =
-  landscape ? { width: dim.width / 2, height:'100%' } : { alignSelf:'stretch',height: 300 };
+  async function onListCastTouch(){
+    const screen = 'Detail';
+    navigation.navigate('Cast',{itemMovie, cast, screen});
+  }
 
 
-  if (urlVideo === '' || cast.length === 0) return <Loading />;
-
+  if (urlVideo === '' || cast.length === 0 || genres.length === 0 || movie.length === 0 || similarMovie.length === 0) return <Loading />;
   return (
     <View style={[styles.container, directionsScreen]}>
       {videoDeleted ?
@@ -121,15 +147,17 @@ const Screen = ({ route, navigation }) => {
         ref={(ref => setRef(ref))}
         overScrollMode='never'
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         style={directionsDetail}
       >
         <DescriptionVideo
-          item={item}
+          itemMovie={itemMovie}
           cast={cast}
           runtime={movie.runtime}
           genres={genres}
-          navigation={navigation} />
-        <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
+          onCastTouch={onCastTouch}
+          onListCastTouch={onListCastTouch} />
+        <RelatedVideo itemVideo={itemMovie} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
       </ScrollView>
     </View>
   )
@@ -137,22 +165,6 @@ const Screen = ({ route, navigation }) => {
 
 
 const DetailScreen = ({ route, navigation }) => {
-
-  useEffect(() => {
-
-    const backAction = () => {
-      navigation.navigate('Home');
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
   return (
     <Provider store={store}>
       <Screen route={route} navigation={navigation} />

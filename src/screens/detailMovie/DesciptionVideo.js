@@ -18,7 +18,7 @@ const GenreItem = ({ name }) => {
 }
 
 
-const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
+const DescriptionVideo = ({ itemMovie, cast, runtime, genres, onCastTouch, onListCastTouch }) => {
 
     const [num, setNumLine] = useState(2);
 
@@ -29,7 +29,7 @@ const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.containerDetail} >
-                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.title}>{itemMovie.title}</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.iconSmall}>
                         <Ionicons name='time-outline' color={COLORS.gray} size={20} />
@@ -38,20 +38,20 @@ const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
                     <View style={styles.iconSmall}>
                         <Ionicons name='star' color={COLORS.gray} size={20} />
                     </View>
-                    <Text style={styles.textGray}>{item.vote_average} (IMDb)</Text>
+                    <Text style={styles.textGray}>{itemMovie.vote_average} (IMDb)</Text>
                 </View>
                 <View style={styles.dash}></View>
 
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <View style={{ flex: 0.4 }}>
                         <Text style={styles.section}>Release date</Text>
-                        <Text style={styles.textGray}>{item.release_date}</Text>
+                        <Text style={styles.textGray}>{itemMovie.release_date}</Text>
                     </View>
                     <View style={{ flex: 0.6 }}>
                         <Text style={styles.section}>Genre</Text>
                         <View style={{ flexWrap: 'wrap', flexDirection: 'row', marginLeft: 5 }}>
                             {
-                                item.genre_ids.map((i) => {
+                                itemMovie.genre_ids.map((i) => {
                                     const genreName = genres.filter(g => g.id === i);
                                     return <GenreItem key={i} name={genreName[0].name} />
                                 })
@@ -69,8 +69,8 @@ const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
                             const image_source = `${URL_IMG}/w200${i.profile_path}`;
                             return (
                                 <View key={i.id} style={styles.imagesContainer}>
-                                    <TouchableOpacity activeOpacity={.7} onPress={()=>{
-                                        navigation.push('Cast');
+                                    <TouchableOpacity activeOpacity={.7} onPress={() => {
+                                        onCastTouch(i.id);
                                     }}>
                                         <Image style={styles.images} resizeMode='contain' source={{ uri: image_source }} />
                                     </TouchableOpacity>
@@ -80,13 +80,17 @@ const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
                         })
                     }
                 </View>
-                <TouchableOpacity style={{ alignItems: 'flex-end', marginTop: 10 }} activeOpacity={.7}>
+                <TouchableOpacity
+                    style={{ alignItems: 'flex-end', marginTop: 10 }}
+                    activeOpacity={.7} onPress={() => {
+                        onListCastTouch();
+                    }}>
                     <Text style={styles.showMore}>Show more</Text>
                 </TouchableOpacity>
                 <View style={styles.dash}></View>
 
                 <Text style={styles.section}>Synopsis</Text>
-                <Text numberOfLines={num} style={styles.textGray}>{item.overview}</Text>
+                <Text numberOfLines={num} style={styles.textGray}>{itemMovie.overview}</Text>
                 {
                     visibility ? <View></View> :
                         <View>

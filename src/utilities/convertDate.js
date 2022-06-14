@@ -1,6 +1,6 @@
 
 export const convertDateToString = (str) => {
-    if (str.length <= 0) return;
+    if(str === null) return 'Unknow';
     const year = str.substring(0, 4);
     const month = monthText(parseInt(str.substring(5, 7)));
     const day = parseInt(str.substring(8, 10));
