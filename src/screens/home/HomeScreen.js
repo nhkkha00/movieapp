@@ -42,7 +42,7 @@ const Screen = ({ navigation }) => {
     dispatch(getSimilarMovies(item.id));
 
     const resVideo = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
-    navigation.navigate('Detail', { item });
+    navigation.navigate('Detail', { itemMovie:  item });
   }
 
   //loading genres
