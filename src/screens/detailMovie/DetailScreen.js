@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, BackHandler } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import COLORS from '../../res/color/colors';
-import VideoMovie from './VideoMovie';
 import store from '../../redux/store';
 import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
@@ -10,16 +9,18 @@ import axios from 'axios';
 import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_VIDEO_MOVIE } from '../../connection/MethodApi';
 import { getSimilarMovies } from '../../redux/actions';
 import Loading from '../../components/Loading';
+import { GOOGLE_API_KEY } from '../../connection/ApiKey';
+import Youtube from 'react-native-youtube';
 
-const VideoDeleted = () => {
-  return (
-    <View style={styles.deleteVideo}>
-      <Text style={styles.textVideo}>This video has been removed</Text>
-    </View>
-  )
-}
+import {useDeviceOrientation} from '@react-native-community/hooks'
+
+
 
 const Screen = ({ route, navigation }) => {
+
+  const { landscape } = useDeviceOrientation();
+
+  const dim = Dimensions.get("screen");
 
   const dispatch = useDispatch();
 
@@ -33,9 +34,9 @@ const Screen = ({ route, navigation }) => {
 
   const similarMovie = useSelector(state => state.similarMovies.dataSimilarMovies);
 
-  const [movie,setMovie] = useState(''); 
+  const [movie, setMovie] = useState('');
 
-  const [cast,setCast] = useState([]);
+  const [cast, setCast] = useState([]);
 
   async function onPressRelatedMovie(item) {
     // ref.scrollTo({
@@ -80,33 +81,57 @@ const Screen = ({ route, navigation }) => {
     console.log(e);
   }
 
+  function onChangeState(state) {
+
+  }
+
+
+  const directionsScreen =
+  landscape ? { flexDirection: 'row' } : { flexDirection: 'column' };
+
+  const directionsDetail =
+  landscape ? { width: dim.width / 2,height: '100%' } : { alignSelf:'stretch', height:'100%' };
+
+  const directionsVideo =
+  landscape ? { width: dim.width / 2, height:'100%' } : { alignSelf:'stretch',height: 300 };
+
+
   if (urlVideo === '' || cast.length === 0) return <Loading />;
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, directionsScreen]}>
       {videoDeleted ?
-        <View style={{
-          height: 300,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: COLORS.mainBg
-        }}>
+        <View style={directionsVideo}>
           <Text style={{ color: COLORS.white }}>This video is not available</Text>
         </View>
         :
-        <VideoMovie
-          keyVideo={urlVideo}
-          onErrorVideo={onErrorVideo}
-          onReady={onReady} />
+        <Youtube
+          apiKey={GOOGLE_API_KEY}
+          videoId={urlVideo} // The YouTube video ID
+          onError={onErrorVideo}
+          onReady={onReady}
+          onChangeState={onChangeState}
+          controls={1}
+          loop={true}
+          fullscreen={false}
+          style={directionsVideo}
+        />
       }
       <ScrollView
         ref={(ref => setRef(ref))}
         overScrollMode='never'
         showsVerticalScrollIndicator={false}
+        style={directionsDetail}
       >
-        <DescriptionVideo item={item} cast={cast} runtime={movie.runtime} genres={genres} />
+        <DescriptionVideo
+          item={item}
+          cast={cast}
+          runtime={movie.runtime}
+          genres={genres}
+          navigation={navigation} />
         <RelatedVideo itemVideo={item} data={similarMovie} onPressRelatedMovie={onPressRelatedMovie} />
       </ScrollView>
-    </View >
+    </View>
   )
 }
 
@@ -140,19 +165,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.mainBg
-  },
-  deleteVideo: {
-    alignSelf: 'stretch',
-    height: 300,
-    backgroundColor: COLORS.black,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor:COLORS.mainBg
   },
   textVideo: {
     color: COLORS.white,
-    fontFamily: 'lato_regular'
-  }
+    fontFamily: 'lato_regular',
+  },
 });
 
 export default DetailScreen;

@@ -33,9 +33,6 @@ const Screen = ({ navigation }) => {
   //tab genres click
   const onTabPress = useCallback((item,itemIndex,containerRef)=> {
     setLoading(true);
-
-    console.log(itemIndex);
-
     dispatch(getMovies(item.object.id));
   });
 

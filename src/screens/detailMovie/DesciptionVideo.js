@@ -18,7 +18,7 @@ const GenreItem = ({ name }) => {
 }
 
 
-const DescriptionVideo = ({ item, cast, runtime, genres }) => {
+const DescriptionVideo = ({ item, cast, runtime, genres, navigation }) => {
 
     const [num, setNumLine] = useState(2);
 
@@ -69,7 +69,9 @@ const DescriptionVideo = ({ item, cast, runtime, genres }) => {
                             const image_source = `${URL_IMG}/w200${i.profile_path}`;
                             return (
                                 <View key={i.id} style={styles.imagesContainer}>
-                                    <TouchableOpacity activeOpacity={.7}>
+                                    <TouchableOpacity activeOpacity={.7} onPress={()=>{
+                                        navigation.push('Cast');
+                                    }}>
                                         <Image style={styles.images} resizeMode='contain' source={{ uri: image_source }} />
                                     </TouchableOpacity>
                                     <Text numberOfLines={1} style={styles.textCast}>{i.name}</Text>

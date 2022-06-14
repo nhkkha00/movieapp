@@ -3,7 +3,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import React from 'react';
 import { View, StyleSheet, Easing, Animated } from 'react-native';
 import COLORS from '../res/color/colors';
-import DetailScreen from './detail/DetailScreen';
+import CastScreen from './detailCast/CastScreen';
+import DetailScreen from './detailMovie/DetailScreen';
 import MainScreen from './main/MainScreen';
 
 
@@ -32,6 +33,10 @@ const RootStack = () => {
             }
           }}
         />
+        <Stack.Screen
+          name='Cast'
+          component={CastScreen}
+         />
       </Stack.Navigator>
     </NavigationContainer>
   );
