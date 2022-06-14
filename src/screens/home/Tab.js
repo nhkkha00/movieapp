@@ -1,30 +1,26 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { forwardRef } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import COLORS from '../../res/color/colors';
 
-const Tab = ({ item, onTabPress, colorSelect }) => {
-
+const Tab = forwardRef(({ item, onTabPress, colorSelect }, ref) => {
     return (
-
         <TouchableOpacity activeOpacity={.7} style={styles.container} onPress={onTabPress}>
-            <Text style={{
-                color: colorSelect,
-                fontSize: 18,
-                marginTop: 10,
-                marginLeft: 20,
-                marginRight: 20,
-                marginBottom: 10,
-                fontFamily:'lato_regular'
-            }}>{item.name}</Text>
+            <View ref={ref} 
+            >
+                <Text style={{
+                    color: colorSelect,
+                    fontSize: 18,
+                    fontFamily: 'lato_regular'
+                }}>{item.object.name}</Text>
+            </View>
         </TouchableOpacity>
 
     );
-}
+})
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        margin:10
     }
 });
 

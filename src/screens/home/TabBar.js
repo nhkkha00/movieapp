@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import { View, FlatList } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, FlatList, Animated, ScrollView, findNodeHandle } from 'react-native';
 import COLORS from '../../res/color/colors';
 import Tab from './Tab';
 
-const TabBar = ({ data, onTabPress }) => {
+const TabBar = ({ data, width, scrollX, onTabPress }) => {
 
     const [selectItem, setSelectItem] = useState(0);
 
+    const containerRef = useRef();
+
     return (
         <View>
-            <FlatList
+            <Animated.FlatList
                 data={data}
                 horizontal
-                extraData={selectItem}
                 overScrollMode='never'
+                ref={containerRef}
                 showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-
+                CellRendererComponent={({ item, index }) => {
                     let textColor = COLORS.pink;
 
                     if (index !== selectItem) {
@@ -24,19 +25,35 @@ const TabBar = ({ data, onTabPress }) => {
                     }
 
                     return (
-                        <View>
-                            <Tab item={item}
+                        <View
+                            style={{ margin: 5 }}
+                            onLayout={(event) => {
+                                let { x, y, width, height } = event.nativeEvent.layout;
+                                item.layout = {
+                                    x: x,
+                                    i: y,
+                                    width: width,
+                                    height: height,
+                                }
+                            }}>
+                            <Tab
+                                key={item.key}
+                                item={item}
+                                ref={item.ref}
                                 colorSelect={textColor}
                                 onTabPress={() => {
                                     setSelectItem(index);
-                                    onTabPress(item);
+                                    onTabPress(item, index, containerRef);
                                 }} />
+
                         </View>
-                    )
+                    );
                 }}
             />
-        </View>
+        </View >
     );
 }
+
+
 
 export default TabBar;

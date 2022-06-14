@@ -20,7 +20,6 @@ const Screen = () => {
   const genres = useSelector(state => state.genres.dataGenres);
 
 
-
   useEffect(() => {
     //get tab before render
     dispatch(getGenres());

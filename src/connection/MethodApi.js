@@ -16,7 +16,15 @@ export const GET_URL_SIMILAR_MOVIE = (id)=>{
 }
 
 export const GET_URL_DETAIL_MOVIE = (id)=>{
-    return `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&append_to_response=videos`;
+    return `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
+}
+
+export const GET_URL_VIDEO_MOVIE = (id)=>{
+    return `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`;
+}
+
+export const GET_URL_CAST_CREW = (id)=>{
+    return `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}&language=en-US`;
 }
 
 export const URL_VIDEO = 'https://www.youtube.com/watch?v=';
