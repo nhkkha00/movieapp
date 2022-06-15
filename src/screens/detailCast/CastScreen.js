@@ -34,7 +34,7 @@ const CastScreen = ({ route, navigation }) => {
     const resActor = await axios.get(GET_URL_DETAIL_PERSON(item.id));
     const actor = resActor.data;
     const screen = 'CastScreen';
-    navigation.navigate('DetailCast', { itemMovie, cast , actor, screen });
+    navigation.push('DetailCast', { itemMovie, cast , actor, screen });
 }
 
   return (

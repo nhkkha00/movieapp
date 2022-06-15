@@ -1,50 +1,60 @@
 
 import React from 'react';
-import { View, StyleSheet, FlatList, Dimensions,Animated } from 'react-native';
-import Movie from './Movie';
+import { View, StyleSheet, FlatList, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
+import { URL_IMG } from '../../connection/MethodApi';
+import COLORS from '../../res/color/colors';
+import { getRandomValues } from '../../utilities/randomValues';
 
-const ListMovies = ({ data,scrollX, onTouchMovie }) => {
+const ListMovies = ({ data, heightList, onTouchMovie }) => {
 
-    const numColums = 2;
+    const renderItem = ({ item, index }) => {
+
+        const randomHeight = getRandomValues(heightList);
+
+        const image_source = `${URL_IMG}/w200${item.poster_path}`;
+
+        return (
+            <TouchableOpacity style={{flex: 1,marginBottom:10 }} activeOpacity={.7} onPress={()=>{
+                onTouchMovie(item);
+            }}>
+                <Image style={{
+                    alignSelf: 'stretch',
+                    height: randomHeight,
+                    borderRadius: 10,
+                    margin:10
+                }}
+                    resizeMode='cover'
+                    source={{ uri: image_source }} />
+                <Text
+                    numberOfLines={1}
+                    style={{
+                        color: COLORS.white,
+                        marginLeft: 10,
+                        textAlign: 'auto',
+                        fontFamily: 'lato_regular'
+                    }}>
+                    {item.title}
+                </Text>
+            </TouchableOpacity>
+        )
+    }
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                overScrollMode='never'
-                numColumns={numColums}
-                showsVerticalScrollIndicator={false}
-                data={data}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false }
-                  )}
-                renderItem={({ item, index }) => {
-                    let width = 170;
-                    let height = 220;
-                    let marginTop = 10;
-                    if (index % 2 !== 0) {
-                        width = 170;
-                        height = 200;
-                        marginTop = 30;
-                    }
-                    return <Movie
-                        item={item}
-                        width={width}
-                        height={height}
-                        marginTop={marginTop}
-                        onTouchMovie={() => {
-                            onTouchMovie(item);
-                        }} />
-                }}
-            />
-        </View>
+        <FlatList
+            overScrollMode='never'
+            numColumns={2}
+            style={{ alignSelf: 'stretch' }}
+            contentContainerStyle={{
+                paddingHorizontal: 10,
+                alignSelf: 'stretch'
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={data}
+            renderItem={renderItem}
+        />
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
-});
 
 export default ListMovies;

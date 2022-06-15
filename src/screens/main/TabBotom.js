@@ -3,10 +3,13 @@ import { View, StyleSheet, Text } from 'react-native';
 import COLORS from '../../res/color/colors';
 import Tab from './Tab';
 
+import {useDeviceOrientation} from '@react-native-community/hooks'
+
 const TabBottom = ({ state, descriptors, navigation }) => {
 
+
     return (
-        <View style={styles.tab}>
+        <View style={styles.tabVer}>
             {
                 state.routes.map((route, index) => {
 
@@ -31,15 +34,19 @@ const TabBottom = ({ state, descriptors, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    tab: {
+    tabVer: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-        backgroundColor: COLORS.mainBg
+        backgroundColor:COLORS.mainBg,
+        height:60
+    },
+    tabHor:{
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        position:'absolute',
+        width:'20%',
+        backgroundColor: COLORS.mainBg,
+        height:60,
     }
 });
 

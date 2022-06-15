@@ -11,12 +11,16 @@ import ListMovies from './ListMovies';
 import Loading from '../../components/Loading';
 import axios from 'axios';
 import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
+import { useDeviceOrientation } from '@react-native-community/hooks'
+
 
 const Screen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const { landscape } = useDeviceOrientation();
+
+  const orientationMenu = landscape ? false : true;
 
   const genres = useSelector(state => state.genres.dataGenres);
 
@@ -31,7 +35,7 @@ const Screen = ({ navigation }) => {
   const { width, height } = Dimensions.get('screen');
 
   //tab genres click
-  const onTabPress = useCallback((item,itemIndex,containerRef)=> {
+  const onTabPress = useCallback((item, itemIndex, containerRef) => {
     setLoading(true);
     dispatch(getMovies(item.object.id));
   });
@@ -40,9 +44,11 @@ const Screen = ({ navigation }) => {
   async function onTouchMovie(item) {
     //get related movie
     dispatch(getSimilarMovies(item.id));
-
-    const resVideo = await axios.get(GET_URL_DETAIL_MOVIE(item.id));
-    navigation.navigate('Detail', { itemMovie:  item });
+    navigation.navigate('DetailStack',
+      {
+        screen: 'Detail',
+        params: { itemMovie: item }
+      });
   }
 
   //loading genres
@@ -70,13 +76,39 @@ const Screen = ({ navigation }) => {
     }
   }, [movies]);
 
+
   if (dataGenres.length <= 0) return <Loading />
   return (
     <View style={styles.container}>
-      <Title />
-      <SearchBar />
-      <TabBar width={width} data={dataGenres} onTabPress={onTabPress} />
-      {loading ? <Loading /> : <ListMovies scrollX={scrollX} data={movies} onTouchMovie={onTouchMovie} />}
+      {landscape ?
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ width: '20%', height: '100%'}}>
+            <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
+          </View>
+          <View style={{ width: 1, height: '100%', backgroundColor: COLORS.gray3 }}></View>
+          <View style={{ width: '80%', height: '100%' }}>
+            <SearchBar />
+            {loading ? <Loading />
+              : <ListMovies
+                data={movies}
+                onTouchMovie={onTouchMovie}
+                heightList={[180,190,200,210,220,230,240,250,260,270,280]} />}
+          </View>
+        </View>
+        :
+        <View style={{ flex: 1 }}>
+          <View>
+            <Title />
+            <SearchBar />
+            <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
+          </View>
+          {loading ? <Loading />
+            : <ListMovies
+              data={movies}
+              onTouchMovie={onTouchMovie}
+              heightList={[180,190,200,210,220,230,240,250,260,270,280]} />}
+        </View>
+      }
     </View>
   )
 }
@@ -92,7 +124,7 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
 });
 

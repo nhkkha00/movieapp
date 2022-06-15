@@ -80,13 +80,17 @@ const DescriptionVideo = ({ itemMovie, cast, runtime, genres, onCastTouch, onLis
                         })
                     }
                 </View>
-                <TouchableOpacity
-                    style={{ alignItems: 'flex-end', marginTop: 10 }}
-                    activeOpacity={.7} onPress={() => {
-                        onListCastTouch();
-                    }}>
-                    <Text style={styles.showMore}>Show more</Text>
-                </TouchableOpacity>
+                {
+                    cast.length > 3 &&
+                    <TouchableOpacity
+                        style={{ alignItems: 'flex-end', marginTop: 10 }}
+                        activeOpacity={.7} onPress={() => {
+                            onListCastTouch();
+                        }}>
+                        <Text style={styles.showMore}>Show more</Text>
+                    </TouchableOpacity>
+                }
+
                 <View style={styles.dash}></View>
 
                 <Text style={styles.section}>Synopsis</Text>
