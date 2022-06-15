@@ -13,6 +13,7 @@ import axios from 'axios';
 import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
 import { useDeviceOrientation } from '@react-native-community/hooks'
 
+
 const Screen = ({ navigation }) => {
 
   const dispatch = useDispatch();
@@ -75,12 +76,13 @@ const Screen = ({ navigation }) => {
     }
   }, [movies]);
 
+
   if (dataGenres.length <= 0) return <Loading />
   return (
     <View style={styles.container}>
       {landscape ?
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ width: '20%', height: '100%' }}>
+          <View style={{ width: '20%', height: '100%'}}>
             <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
           </View>
           <View style={{ width: 1, height: '100%', backgroundColor: COLORS.gray3 }}></View>

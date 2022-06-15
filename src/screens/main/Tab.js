@@ -16,7 +16,7 @@ const Tab = ({ text, active, onTouch }) => {
   }
 
   return (
-    <TouchableOpacity activeOpacity={.7} onPress={onTouch}>
+    <TouchableOpacity style={styles.container} activeOpacity={.7} onPress={onTouch}>
       <MaskedView
         maskElement={
           <View style={styles.icon}>
@@ -36,9 +36,9 @@ const Tab = ({ text, active, onTouch }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor:COLORS.mainBg
   },
   icon: {
     width: 60,

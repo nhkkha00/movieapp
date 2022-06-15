@@ -26,6 +26,11 @@ const RootStack = () => {
         <Stack.Screen
           name='DetailStack'
           component={DetailStack}
+          options={{
+            headerStyle:{
+              height:0
+            }
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

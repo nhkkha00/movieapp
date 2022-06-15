@@ -29,20 +29,21 @@ const Screen = () => {
     return <Loading />;
   else {
     return (
-      <Tab.Navigator
-        sceneContainerStyle={{ backgroundColor: COLORS.mainBg }}
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: COLORS.mainBg,
-            borderTopWidth: 0
-          }
-        }}
-        tabBar={props => <TabBottom {...props} />}
-      >
-        <Tab.Screen name='Home' component={HomeScreen} />
-        <Tab.Screen name='Fav' component={FavScreen} />
-      </Tab.Navigator>)
+        <Tab.Navigator
+          sceneContainerStyle={{ backgroundColor: COLORS.mainBg }}
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: COLORS.mainBg,
+              borderTopWidth: 0,
+            }
+          }}
+          tabBar={props => <TabBottom {...props} />}
+        >
+          <Tab.Screen name='Home' component={HomeScreen} />
+          <Tab.Screen name='Fav' component={FavScreen} />
+        </Tab.Navigator>
+    )
   }
 }
 

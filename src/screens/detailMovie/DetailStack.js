@@ -12,15 +12,21 @@ const DetailStack = () => {
 
   return (
     <Stack.Navigator
-    screenOptions={{
-      ...TransitionPresets.ModalFadeTransition,
-      headerStyle:{
-        height:0
-      }
-    }}>
-        <Stack.Screen name='Detail' component={DetailScreen}/>
-        <Stack.Screen name='Cast' component={CastScreen}/>
-        <Stack.Screen name='DetailCast' component={DetailCastScreen}/>
+      screenOptions={{
+        headerShown:false,
+        ...TransitionPresets.ModalFadeTransition,
+      }}>
+      <Stack.Screen
+        name='Detail'
+        component={DetailScreen}
+        options={{
+          headerStyle:{
+            height:0
+          }
+        }}
+        />
+      <Stack.Screen name='Cast' component={CastScreen} />
+      <Stack.Screen name='DetailCast' component={DetailCastScreen} />
     </Stack.Navigator>
   );
 }

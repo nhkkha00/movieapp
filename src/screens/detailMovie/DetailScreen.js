@@ -106,6 +106,7 @@ const Screen = ({ route, navigation }) => {
     setCast(resCast.data.cast);
     setMovie(resMovie.data);
     dispatch(getSimilarMovies(itemMovie.id));
+    
   }
 
   useEffect(() => {
@@ -127,7 +128,7 @@ const Screen = ({ route, navigation }) => {
   }
 
   function onChangeState(state) {
-
+    console.log(state.state);
   }
 
   if (urlVideo === '' || cast.length === 0 || genres.length === 0 || movie.length === 0 || similarMovie.length === 0) return <Loading />;
