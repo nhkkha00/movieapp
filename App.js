@@ -9,7 +9,6 @@ const App = () => {
 
   return (
       <View style={{ flex: 1 }}>
-        <StatusBar hidden={true} />
         <RootStack />
       </View>
   );

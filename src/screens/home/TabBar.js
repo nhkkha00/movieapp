@@ -3,7 +3,7 @@ import { View, FlatList, Animated, ScrollView, findNodeHandle } from 'react-nati
 import COLORS from '../../res/color/colors';
 import Tab from './Tab';
 
-const TabBar = ({ data, width, scrollX, onTabPress }) => {
+const TabBar = ({ data, orientation,  width, scrollX, onTabPress }) => {
 
     const [selectItem, setSelectItem] = useState(0);
 
@@ -13,10 +13,11 @@ const TabBar = ({ data, width, scrollX, onTabPress }) => {
         <View>
             <Animated.FlatList
                 data={data}
-                horizontal
+                horizontal={orientation}
                 overScrollMode='never'
                 ref={containerRef}
                 showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 CellRendererComponent={({ item, index }) => {
                     let textColor = COLORS.pink;
 
