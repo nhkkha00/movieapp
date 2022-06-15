@@ -19,11 +19,9 @@ const DetailCastScreen = ({ route, navigation }) => {
 
     const backAction = () => {
       if (screen === 'Detail') {
-        console.log('Detail');
         navigation.replace('Detail',{itemMovie});
       } else {
         if (screen === 'CastScreen') {
-          console.log('CastScreen');
           navigation.push('Cast', { itemMovie, cast })
         }
       }

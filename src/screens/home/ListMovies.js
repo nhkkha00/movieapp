@@ -1,15 +1,24 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, Dimensions, TouchableOpacity, Image, Text } from 'react-native';
 import { URL_IMG } from '../../connection/MethodApi';
 import COLORS from '../../res/color/colors';
 import { getRandomValues } from '../../utilities/randomValues';
 
-const ListMovies = ({ data, heightList, onTouchMovie }) => {
+const ListMovies = ({ data,numColumn, width, heightList, onTouchMovie }) => {
 
     const renderItem = ({ item, index }) => {
 
-        const randomHeight = getRandomValues(heightList);
+        // const randomHeight = getRandomValues(heightList);
+
+        let height = 200;
+
+        if(index % 2 === 0 ){
+            height = 220;
+        }
+        if(index % 3 === 0){
+            height = 180;
+        }
 
         const image_source = `${URL_IMG}/w200${item.poster_path}`;
 
@@ -19,7 +28,8 @@ const ListMovies = ({ data, heightList, onTouchMovie }) => {
             }}>
                 <Image style={{
                     alignSelf: 'stretch',
-                    height: randomHeight,
+                    width: width,
+                    height: height,
                     borderRadius: 10,
                     margin:10
                 }}
@@ -30,6 +40,7 @@ const ListMovies = ({ data, heightList, onTouchMovie }) => {
                     style={{
                         color: COLORS.white,
                         marginLeft: 10,
+                        width: width,
                         textAlign: 'auto',
                         fontFamily: 'lato_regular'
                     }}>
@@ -42,7 +53,7 @@ const ListMovies = ({ data, heightList, onTouchMovie }) => {
     return (
         <FlatList
             overScrollMode='never'
-            numColumns={2}
+            numColumns={numColumn}
             style={{ alignSelf: 'stretch' }}
             contentContainerStyle={{
                 paddingHorizontal: 10,
