@@ -5,13 +5,12 @@ import { View, StyleSheet, Easing, Animated } from 'react-native';
 import COLORS from '../res/color/colors';
 import CastScreen from './detailCast/CastScreen';
 import DetailCastScreen from './detailCast/DetailCastScreen';
-import DetailScreen from './detailMovie/DetailScreen';
 import MainScreen from './main/MainScreen';
-
-
-const Stack = createStackNavigator();
+import DetailStack from './detailMovie/DetailStack';
 
 const RootStack = () => {
+
+  const Stack = createStackNavigator();
 
   return (
     <NavigationContainer>
@@ -25,23 +24,9 @@ const RootStack = () => {
           component={MainScreen}
         />
         <Stack.Screen
-          name='Detail'
-          component={DetailScreen}
-          options={{
-            //set height 0 instead hide (over view)
-            headerStyle: {
-              height: 0
-            }
-          }}
+          name='DetailStack'
+          component={DetailStack}
         />
-        <Stack.Screen
-          name='Cast'
-          component={CastScreen}
-         />
-         <Stack.Screen
-          name='DetailCast'
-          component={DetailCastScreen}
-         />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -11,7 +11,10 @@ import { getSimilarMovies } from '../../redux/actions';
 import Loading from '../../components/Loading';
 import { GOOGLE_API_KEY } from '../../connection/ApiKey';
 import Youtube from 'react-native-youtube';
-import {useDeviceOrientation} from '@react-native-community/hooks'
+import { useDeviceOrientation } from '@react-native-community/hooks'
+import { createStackNavigator } from '@react-navigation/stack';
+import CastScreen from '../detailCast/CastScreen';
+import DetailCastScreen from '../detailCast/DetailCastScreen';
 
 
 const Screen = ({ route, navigation }) => {
@@ -23,13 +26,13 @@ const Screen = ({ route, navigation }) => {
   const dim = Dimensions.get("screen");
 
   const directionsScreen =
-  landscape ? { flexDirection: 'row' } : { flexDirection: 'column' };
+    landscape ? { flexDirection: 'row' } : { flexDirection: 'column' };
 
   const directionsDetail =
-  landscape ? { width: dim.width / 2,height: '100%' } : { alignSelf:'stretch', height:'100%' };
+    landscape ? { width: dim.width / 2, height: '100%' } : { alignSelf: 'stretch', height: '100%' };
 
   const directionsVideo =
-  landscape ? { width: dim.width / 2, height:'100%' } : { alignSelf:'stretch',height: 300 };
+    landscape ? { width: dim.width / 2, height: '100%' } : { alignSelf: 'stretch', height: 300 };
 
   const dispatch = useDispatch();
 
@@ -49,7 +52,9 @@ const Screen = ({ route, navigation }) => {
   useEffect(() => {
 
     const backAction = () => {
-      navigation.navigate('Home');
+      navigation.navigate('Main',{
+        screen: 'Home',
+      });
       return true;
     };
 
@@ -63,14 +68,29 @@ const Screen = ({ route, navigation }) => {
     }
   }, []);
 
+  
+  async function onCastTouch(id) {
+    const resActor = await axios.get(GET_URL_DETAIL_PERSON(id));
+    const actor = resActor.data;
+    const screen = 'Detail';
+    navigation.push('DetailCast',{ itemMovie, cast, actor, screen });
+  }
+
+  async function onListCastTouch() {
+    const screen = 'Detail';
+    navigation.push('Cast', { itemMovie, cast, screen });
+  }
+
   async function onPressRelatedMovie(itemMovie) {
     // ref.scrollTo({
     //   x: 0,
     //   y: 0,
     //   animated: true
     // });
-    navigation.push('Detail', { itemMovie });
+    navigation.replace('Detail', { itemMovie });
   }
+
+
 
   async function getDataMovie() {
     const resMovie = await axios.get(GET_URL_DETAIL_MOVIE(itemMovie.id));
@@ -109,19 +129,6 @@ const Screen = ({ route, navigation }) => {
   function onChangeState(state) {
 
   }
-
-  async function onCastTouch(id){
-    const resActor = await axios.get(GET_URL_DETAIL_PERSON(id));
-    const actor = resActor.data;
-    const screen = 'Detail';
-    navigation.navigate('DetailCast',{itemMovie, actor, screen});
-  }
-
-  async function onListCastTouch(){
-    const screen = 'Detail';
-    navigation.navigate('Cast',{itemMovie, cast, screen});
-  }
-
 
   if (urlVideo === '' || cast.length === 0 || genres.length === 0 || movie.length === 0 || similarMovie.length === 0) return <Loading />;
   return (
@@ -164,11 +171,13 @@ const Screen = ({ route, navigation }) => {
 }
 
 
+const Stack = createStackNavigator();
+
 const DetailScreen = ({ route, navigation }) => {
   return (
-    <Provider store={store}>
-      <Screen route={route} navigation={navigation} />
-    </Provider>
+      <Provider store={store}>
+        <Screen route={route} navigation={navigation} />
+      </Provider>
   );
 }
 
@@ -177,7 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:COLORS.mainBg
+    backgroundColor: COLORS.mainBg
   },
   textVideo: {
     color: COLORS.white,

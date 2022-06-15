@@ -5,8 +5,11 @@ import { URL_IMG } from '../../connection/MethodApi';
 import { ScrollView } from 'react-native-gesture-handler';
 import { convertDateToString } from '../../utilities/convertDate';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDeviceOrientation } from '@react-native-community/hooks';
 
 const DetailCastScreen = ({ route, navigation }) => {
+
+  const { landscape } = useDeviceOrientation();
 
   const { itemMovie, cast, actor, screen } = route.params;
 
@@ -16,11 +19,12 @@ const DetailCastScreen = ({ route, navigation }) => {
 
     const backAction = () => {
       if (screen === 'Detail') {
-        navigation.push('Detail', { itemMovie });
+        console.log('Detail');
+        navigation.replace('Detail',{itemMovie});
       } else {
         if (screen === 'CastScreen') {
-          screen
-          navigation.navigate('Cast', { itemMovie, cast })
+          console.log('CastScreen');
+          navigation.push('Cast', { itemMovie, cast })
         }
       }
 
@@ -46,6 +50,12 @@ const DetailCastScreen = ({ route, navigation }) => {
     }
   }
 
+  const directionsProfile =
+   landscape ? { flexDirection:'row'}: { flexDirection:'column' }
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -53,7 +63,7 @@ const DetailCastScreen = ({ route, navigation }) => {
         showsVerticalScrollIndicator={false}
         overScrollMode='never'
       >
-        <View style={{ flexDirection: 'row' }}>
+        <View style={directionsProfile}>
           {
             actor.profile_path === null ?
               <View style={[styles.images, { justifyContent: 'center', alignItems: 'center' }]}>
@@ -63,25 +73,24 @@ const DetailCastScreen = ({ route, navigation }) => {
               <Image style={styles.images} resizeMode='cover' source={{ uri: image_source }} />
           }
           <View style={{ alignSelf: 'center' }}>
-            <Text style={[styles.textGray, { marginTop: 10 }]}>
-              {`Name:\n\t${actor.name}`}
+            <Text numberOfLines={2} style={[styles.textGray, { marginTop: 10 }]}>
+              {`Name:\t${actor.name}`}
             </Text>
             <Text style={[styles.textGray, { marginTop: 10 }]}>
-              {`Gender:\n\t${genderActor()}`}
+              {`Gender:\t${genderActor()}`}
             </Text>
             <Text style={[styles.textGray, { marginTop: 10 }]}>
-              {`Day of birth:\n\t${convertDateToString(actor.birthday)}`}
+              {`Day of birth:\t${convertDateToString(actor.birthday)}`}
             </Text>
             {actor.deathday !== null &&
               <Text style={[styles.textGray, { marginTop: 10 }]}>
-                {`Deathday:\n\t${actor.deathday}`}
+                {`Deathday:\t${convertDateToString(actor.deathday)}`}
               </Text>
             }
             <Text style={[styles.textGray, { marginTop: 10 }]}>
-              {`Role:\n\t${actor.known_for_department}`}
+              {`Role:\t${actor.known_for_department}`}
             </Text>
           </View>
-
         </View>
 
         <View style={styles.dash}></View>
@@ -102,7 +111,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 10,
     margin: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   dash: {
     height: 1,
