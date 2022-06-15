@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import COLORS from '../../res/color/colors';
+import COLORS from '../res/color/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-const SearchBar = () => {
+const SearchBar = ({placeholder,onChangeText}) => {
 
     return (
         <View style={styles.container}>
@@ -14,7 +14,8 @@ const SearchBar = () => {
                 <TextInput
                     style={styles.inputText}
                     placeholderTextColor={COLORS.gray}
-                    placeholder='Sherlock Holmes' />
+                    onChangeText={text=>{onChangeText(text)}}
+                    placeholder={placeholder} />
             </View>
         </View>
     );

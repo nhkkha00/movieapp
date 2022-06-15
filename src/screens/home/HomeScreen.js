@@ -1,7 +1,7 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, FlatList, Animated, Dimensions } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import SearchBar from './SearchBar';
+import SearchBar from '../../components/SearchBar';
 import Title from './Title';
 import store from '../../redux/store';
 import { getGenres, getMovies, getSimilarMovies, getVideoMovie } from '../../redux/actions';
@@ -25,6 +25,8 @@ const Screen = ({ navigation }) => {
   const genres = useSelector(state => state.genres.dataGenres);
 
   const movies = useSelector(state => state.movies.dataMovies);
+
+  const [dataMovie,setDataMovie] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -70,12 +72,27 @@ const Screen = ({ navigation }) => {
   //loading movies
   useEffect(() => {
     if (movies.length > 0) {
+      setDataMovie(movies);
       setLoading(false);
     } else {
       setLoading(true);
     }
   }, [movies]);
 
+
+  function onChangeText(text){
+    if(text){
+      const newData = dataMovie.filter((item)=>{
+        const itemData = item.title ?
+            item.title.toLowerCase() : ''.toLowerCase();
+        const textData = text.toLowerCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setDataMovie(newData);
+    }else{
+      setDataMovie(movies);
+    }
+  }
 
   if (dataGenres.length <= 0) return <Loading />
   return (
@@ -87,26 +104,32 @@ const Screen = ({ navigation }) => {
           </View>
           <View style={{ width: 1, height: '100%', backgroundColor: COLORS.gray3 }}></View>
           <View style={{ width: '80%', height: '100%' }}>
-            <SearchBar />
+            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText}/>
             {loading ? <Loading />
               : <ListMovies
-                data={movies}
+                data={dataMovie}
                 onTouchMovie={onTouchMovie}
-                heightList={[180,190,200,210,220,230,240,250,260,270,280]} />}
+                width={180}
+                numColumn={3}
+                // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
+                 />}
           </View>
         </View>
         :
         <View style={{ flex: 1 }}>
           <View>
             <Title />
-            <SearchBar />
+            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText}/>
             <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
           </View>
           {loading ? <Loading />
             : <ListMovies
-              data={movies}
+              data={dataMovie}
               onTouchMovie={onTouchMovie}
-              heightList={[180,190,200,210,220,230,240,250,260,270,280]} />}
+              width={170}
+              numColumn={2}
+              // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
+               />}
         </View>
       }
     </View>
