@@ -78,7 +78,8 @@ const Screen = ({ route, navigation }) => {
 
   async function onListCastTouch() {
     const screen = 'Detail';
-    navigation.push('Cast', { itemMovie, cast, screen });
+    const current_page = 1;
+    navigation.push('Cast', { itemMovie, cast, screen , current_page });
   }
 
   async function onPressRelatedMovie(itemMovie) {
@@ -135,7 +136,7 @@ const Screen = ({ route, navigation }) => {
   return (
     <View style={[styles.container, directionsScreen]}>
       {videoDeleted ?
-        <View style={directionsVideo}>
+        <View style={[directionsVideo,{ justifyContent:'center',alignItems:'center'}]}>
           <Text style={{ color: COLORS.white }}>This video is not available</Text>
         </View>
         :

@@ -12,6 +12,8 @@ import Loading from '../../components/Loading';
 import axios from 'axios';
 import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
 import { useDeviceOrientation } from '@react-native-community/hooks'
+import Pagination from '../../components/Pagination';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Screen = ({ navigation }) => {
@@ -26,20 +28,31 @@ const Screen = ({ navigation }) => {
 
   const movies = useSelector(state => state.movies.dataMovies);
 
-  const [dataMovie,setDataMovie] = useState([]);
+  const total_pages = useSelector(state => state.movies.totalPages);
+
+  const [dataMovie, setDataMovie] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
-  const ref = useRef();
+  const [ref, setRef] = useState(null);
 
   const [dataGenres, setDataGenres] = useState([]);
 
   const { width, height } = Dimensions.get('screen');
 
+  const [currentGenre, setCurrentGenre] = useState(0);
+
+  const [pageCurrent, setPageCurrent] = useState(1);
+
+  const [allPage, setAllPages] = useState(0);
+
   //tab genres click
   const onTabPress = useCallback((item, itemIndex, containerRef) => {
+    setCurrentGenre(itemIndex);
+    //reset page
+    setPageCurrent(1);
     setLoading(true);
-    dispatch(getMovies(item.object.id));
+    dispatch(getMovies(item.object.id, pageCurrent));
   });
 
   //click on item movie
@@ -62,7 +75,7 @@ const Screen = ({ navigation }) => {
         ref: createRef()
       }));
       setDataGenres(data);
-      dispatch(getMovies(genres[0].id));
+      dispatch(getMovies(genres[currentGenre].id));
       setLoading(false);
     } else {
       setLoading(true);
@@ -71,7 +84,13 @@ const Screen = ({ navigation }) => {
 
   //loading movies
   useEffect(() => {
-    if (movies.length > 0) {
+    if (movies.length > 0 && total_pages > 0) {
+      if (total_pages > 500) {
+        setAllPages(500);
+      } else {
+        setAllPages(total_pages);
+      }
+      setPageCurrent(pageCurrent);
       setDataMovie(movies);
       setLoading(false);
     } else {
@@ -80,17 +99,46 @@ const Screen = ({ navigation }) => {
   }, [movies]);
 
 
-  function onChangeText(text){
-    if(text){
-      const newData = dataMovie.filter((item)=>{
+  function onChangeText(text) {
+    if (text.length > 0) {
+      const newData = dataMovie.filter((item) => {
         const itemData = item.title ?
-            item.title.toLowerCase() : ''.toLowerCase();
+          item.title.toLowerCase() : ''.toLowerCase();
         const textData = text.toLowerCase();
         return itemData.indexOf(textData) > -1;
       });
       setDataMovie(newData);
-    }else{
+    } else {
       setDataMovie(movies);
+    }
+  }
+
+  useEffect(() => {
+    ref?.scrollToOffset({
+      offset: 0,
+      animated: true
+    });
+  }, [pageCurrent]);
+
+  function onChangePage(num) {
+    setPageCurrent(num);
+    setLoading(true);
+    dispatch(getMovies(dataGenres[currentGenre].object.id, num));
+  }
+
+  function onNext() {
+    const num = pageCurrent + 1;
+    setPageCurrent(num);
+    setLoading(true);
+    dispatch(getMovies(dataGenres[currentGenre].object.id, num));
+  }
+
+  function onPrev() {
+    if (pageCurrent > 1) {
+      const num = pageCurrent - 1;
+      setPageCurrent(num);
+      setLoading(true);
+      dispatch(getMovies(dataGenres[currentGenre].object.id, num));
     }
   }
 
@@ -99,37 +147,75 @@ const Screen = ({ navigation }) => {
     <View style={styles.container}>
       {landscape ?
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ width: '20%', height: '100%'}}>
+          <View style={{ width: '20%', height: '100%' }}>
             <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
           </View>
           <View style={{ width: 1, height: '100%', backgroundColor: COLORS.gray3 }}></View>
           <View style={{ width: '80%', height: '100%' }}>
-            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText}/>
+            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText} />
             {loading ? <Loading />
-              : <ListMovies
-                data={dataMovie}
-                onTouchMovie={onTouchMovie}
-                width={180}
-                numColumn={3}
+              :
+              <ScrollView
+                ref={(ref) => {
+                  setRef(ref);
+                }}
+                style={{ flex: 1 }}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode='never'
+              >
+                <ListMovies
+                  data={dataMovie}
+                  onTouchMovie={onTouchMovie}
+                  width={180}
+                  numColumn={3}
                 // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
-                 />}
+                />
+                {
+                  dataMovie.length === 20 &&
+                  <Pagination
+                    pageCurrent={pageCurrent}
+                    onChangePage={onChangePage}
+                    onNext={onNext}
+                    onPrev={onPrev}
+                    pageLength={allPage} />
+                }
+              </ScrollView>
+            }
           </View>
         </View>
         :
         <View style={{ flex: 1 }}>
           <View>
             <Title />
-            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText}/>
+            <SearchBar placeholder='Sherlock Holmes' onChangeText={onChangeText} />
             <TabBar orientation={orientationMenu} width={width} data={dataGenres} onTabPress={onTabPress} />
           </View>
           {loading ? <Loading />
-            : <ListMovies
-              data={dataMovie}
-              onTouchMovie={onTouchMovie}
-              width={170}
-              numColumn={2}
+            :
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              overScrollMode='never'
+              style={{ flex: 1 }}>
+              <ListMovies
+                data={dataMovie}
+                onTouchMovie={onTouchMovie}
+                width={170}
+                numColumn={2}
               // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
-               />}
+              />
+              {
+                dataMovie.length === 20 &&
+                <Pagination
+                  pageCurrent={pageCurrent}
+                  onChangePage={onChangePage}
+                  onNext={onNext}
+                  onPrev={onPrev}
+                  pageLength={allPage} />
+              }
+            </ScrollView>
+          }
         </View>
       }
     </View>

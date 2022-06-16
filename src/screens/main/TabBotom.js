@@ -38,16 +38,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         flexDirection: 'row',
         backgroundColor:COLORS.mainBg,
+        borderTopWidth:1,
+        borderTopColor:COLORS.gray3,
         height:60
     },
-    tabHor:{
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        position:'absolute',
-        width:'20%',
-        backgroundColor: COLORS.mainBg,
-        height:60,
-    }
 });
 
 export default TabBottom;

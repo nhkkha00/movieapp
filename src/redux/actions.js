@@ -22,17 +22,19 @@ export const updateGenres = (dataGenres)=>{
 }
 
 
-export const getMovies = (id)=>{
+export const getMovies = (id,page)=>{
     return {
         type: GET_MOVIES,
-        id
+        id,
+        page
     }
 }
 
-export const updateMovies = (dataMovies)=>{
+export const updateMovies = (dataMovies,totalPages)=>{
     return {
         type: UPDATE_MOVIES,
-        dataMovies
+        dataMovies,
+        totalPages
     }
 }
 

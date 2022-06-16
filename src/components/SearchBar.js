@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     },
     inputText:{
         color:COLORS.gray,
-        fontFamily:'lato_regular'
+        flex:1,
+        borderRadius: 10,
+        fontFamily:'lato_regular',
     }
 });
 

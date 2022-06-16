@@ -20,8 +20,9 @@ function* getSagaGenres(){
 function* getSagaMovies(actions){
     try{
         const id = actions.id;
-        const res = yield axios.get(GET_URL_MOVIES_BY_ID_GENRE(id));
-        yield put(updateMovies(res.data.results));
+        const page = actions.page;
+        const res = yield axios.get(GET_URL_MOVIES_BY_ID_GENRE(id,page));
+        yield put(updateMovies(res.data.results,res.data.total_pages));
     }catch(err){
         console.log(err);
     }

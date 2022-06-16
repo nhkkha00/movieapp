@@ -2,7 +2,8 @@ import { UPDATE_MOVIES } from "../actions";
 
 
 const initialData = {
-    dataMovies: []
+    dataMovies: [],
+    totalPages: 1
 }
 
 const reducerMovies = (state = initialData, actions)=>{
@@ -10,7 +11,8 @@ const reducerMovies = (state = initialData, actions)=>{
         case UPDATE_MOVIES:
             return {
                 ...state,
-                dataMovies: actions.dataMovies
+                dataMovies: actions.dataMovies,
+                totalPages: actions.totalPages
             };
         default:
             return state;
