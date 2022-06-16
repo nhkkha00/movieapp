@@ -34,7 +34,7 @@ const Screen = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const ref = useRef();
+  const [ref, setRef] = useState(null);
 
   const [dataGenres, setDataGenres] = useState([]);
 
@@ -100,7 +100,7 @@ const Screen = ({ navigation }) => {
 
 
   function onChangeText(text) {
-    if (text) {
+    if (text.length > 0) {
       const newData = dataMovie.filter((item) => {
         const itemData = item.title ?
           item.title.toLowerCase() : ''.toLowerCase();
@@ -112,6 +112,13 @@ const Screen = ({ navigation }) => {
       setDataMovie(movies);
     }
   }
+
+  useEffect(() => {
+    ref?.scrollToOffset({
+      offset: 0,
+      animated: true
+    });
+  }, [pageCurrent]);
 
   function onChangePage(num) {
     setPageCurrent(num);
@@ -149,6 +156,9 @@ const Screen = ({ navigation }) => {
             {loading ? <Loading />
               :
               <ScrollView
+                ref={(ref) => {
+                  setRef(ref);
+                }}
                 style={{ flex: 1 }}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
@@ -161,12 +171,15 @@ const Screen = ({ navigation }) => {
                   numColumn={3}
                 // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
                 />
-                <Pagination
-                  pageCurrent={pageCurrent}
-                  onChangePage={onChangePage}
-                  onNext={onNext}
-                  onPrev={onPrev}
-                  pageLength={allPage} />
+                {
+                  dataMovie.length === 20 &&
+                  <Pagination
+                    pageCurrent={pageCurrent}
+                    onChangePage={onChangePage}
+                    onNext={onNext}
+                    onPrev={onPrev}
+                    pageLength={allPage} />
+                }
               </ScrollView>
             }
           </View>
@@ -192,12 +205,15 @@ const Screen = ({ navigation }) => {
                 numColumn={2}
               // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
               />
-              <Pagination
-                pageCurrent={pageCurrent}
-                onChangePage={onChangePage}
-                onNext={onNext}
-                onPrev={onPrev}
-                pageLength={allPage} />
+              {
+                dataMovie.length === 20 &&
+                <Pagination
+                  pageCurrent={pageCurrent}
+                  onChangePage={onChangePage}
+                  onNext={onNext}
+                  onPrev={onPrev}
+                  pageLength={allPage} />
+              }
             </ScrollView>
           }
         </View>

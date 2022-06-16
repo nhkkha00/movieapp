@@ -11,7 +11,7 @@ const DetailCastScreen = ({ route, navigation }) => {
 
   const { landscape } = useDeviceOrientation();
 
-  const { itemMovie, cast, actor, screen } = route.params;
+  const { itemMovie, cast, actor, screen, current_page } = route.params;
 
   const image_source = `${URL_IMG}/w200${actor.profile_path}`;
 
@@ -22,7 +22,7 @@ const DetailCastScreen = ({ route, navigation }) => {
         navigation.replace('Detail',{itemMovie});
       } else {
         if (screen === 'CastScreen') {
-          navigation.push('Cast', { itemMovie, cast })
+          navigation.push('Cast', { itemMovie, cast, current_page })
         }
       }
 
