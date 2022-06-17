@@ -40,6 +40,7 @@ function* getSagaSimilarMovies(actions){
 }
 
 
+
 export default function* rootSaga (){
     yield takeEvery(GET_GENRES, getSagaGenres)
     yield takeEvery(GET_MOVIES,getSagaMovies)

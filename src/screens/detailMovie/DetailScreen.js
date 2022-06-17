@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, BackHandler, Dimensions, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import COLORS from '../../res/color/colors';
 import store from '../../redux/store';
 import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
 import axios from 'axios';
-import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_DETAIL_PERSON, GET_URL_VIDEO_MOVIE } from '../../connection/MethodApi';
-import { getSimilarMovies } from '../../redux/actions';
+import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_DETAIL_PERSON, GET_URL_VIDEO_MOVIE, URL_IMG } from '../../connection/MethodApi';
+import { addFav, ADD_FAV, getSimilarMovies, removeFav } from '../../redux/actions';
 import Loading from '../../components/Loading';
 import { GOOGLE_API_KEY } from '../../connection/ApiKey';
 import Youtube from 'react-native-youtube';
@@ -15,6 +15,10 @@ import { useDeviceOrientation } from '@react-native-community/hooks'
 import { createStackNavigator } from '@react-navigation/stack';
 import CastScreen from '../detailCast/CastScreen';
 import DetailCastScreen from '../detailCast/DetailCastScreen';
+import LinearGradient from 'react-native-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+
+
 
 
 const Screen = ({ route, navigation }) => {
@@ -48,11 +52,31 @@ const Screen = ({ route, navigation }) => {
 
   const [cast, setCast] = useState([]);
 
+  const [playing, setPlaying] = useState(false);
+
+  const [loadingImage, setLoadingImage] = useState(true);
+
+  const image_source = `${URL_IMG}/w500${itemMovie.poster_path}`;
+
+  const fav = useSelector(state => state.favs.dataFav);
+
+  const [isHeart,setHeart]= useState(false);
+
+  useEffect(()=>{
+    if(fav.length > 0){
+      fav.forEach(element => {
+        if(element.id === itemMovie.id){
+          setHeart(true);
+          return;
+        }
+      });
+    }
+  },[fav]);
 
   useEffect(() => {
 
     const backAction = () => {
-      navigation.navigate('Main',{
+      navigation.navigate('Main', {
         screen: 'Home',
       });
       return true;
@@ -68,18 +92,24 @@ const Screen = ({ route, navigation }) => {
     }
   }, []);
 
-  
+  function onBackButton() {
+    navigation.navigate('Main', {
+      screen: 'Home',
+    });
+  }
+
+
   async function onCastTouch(id) {
     const resActor = await axios.get(GET_URL_DETAIL_PERSON(id));
     const actor = resActor.data;
     const screen = 'Detail';
-    navigation.push('DetailCast',{ itemMovie, cast, actor, screen });
+    navigation.push('DetailCast', { itemMovie, cast, actor, screen });
   }
 
   async function onListCastTouch() {
     const screen = 'Detail';
     const current_page = 1;
-    navigation.push('Cast', { itemMovie, cast, screen , current_page });
+    navigation.push('Cast', { itemMovie, cast, screen, current_page });
   }
 
   async function onPressRelatedMovie(itemMovie) {
@@ -107,7 +137,7 @@ const Screen = ({ route, navigation }) => {
     setCast(resCast.data.cast);
     setMovie(resMovie.data);
     dispatch(getSimilarMovies(itemMovie.id));
-    
+
   }
 
   useEffect(() => {
@@ -130,27 +160,93 @@ const Screen = ({ route, navigation }) => {
 
   function onChangeState(state) {
     console.log(state.state);
+    switch (state.state) {
+      case 'ended':
+        setPlaying(false);
+        break;
+    }
   }
 
-  if (urlVideo === '' || cast.length === 0 || genres.length === 0 || movie.length === 0 || similarMovie.length === 0) return <Loading />;
+  if (urlVideo === '' ||
+    cast.length === 0 ||
+    genres.length === 0 ||
+    movie.length === 0 ||
+    similarMovie.length === 0
+  ) return <Loading />;
   return (
     <View style={[styles.container, directionsScreen]}>
-      {videoDeleted ?
-        <View style={[directionsVideo,{ justifyContent:'center',alignItems:'center'}]}>
-          <Text style={{ color: COLORS.white }}>This video is not available</Text>
-        </View>
-        :
-        <Youtube
-          apiKey={GOOGLE_API_KEY}
-          videoId={urlVideo} // The YouTube video ID
-          onError={onErrorVideo}
-          onReady={onReady}
-          onChangeState={onChangeState}
-          controls={1}
-          loop={true}
-          fullscreen={false}
-          style={directionsVideo}
-        />
+      {
+        playing ?
+          <View style={[directionsVideo, { justifyContent: 'center', alignItems: 'center' }]}>
+            {videoDeleted ?
+              <Text style={{ color: COLORS.white }}>This video is not available</Text>
+              :
+              <Youtube
+                apiKey={GOOGLE_API_KEY}
+                videoId={urlVideo} // The YouTube video ID
+                onError={onErrorVideo}
+                onReady={onReady}
+                play={playing}
+                onChangeState={onChangeState}
+                controls={1}
+                fullscreen={false}
+                style={directionsVideo}
+              />
+            }
+          </View>
+          :
+          <View style={[directionsVideo, { justifyContent: 'center', alignItems: 'center' }]}>
+            <ImageBackground
+              resizeMode='cover'
+              style={directionsVideo}
+              source={{ uri: image_source }}
+              onLoad={() => {
+                setLoadingImage(false);
+              }}
+            >
+              <LinearGradient
+                style={directionsVideo}
+                colors={[COLORS.black1, COLORS.transparent, COLORS.transparent, COLORS.black2]} />
+            </ImageBackground>
+            <TouchableOpacity
+              activeOpacity={.7}
+              style={{ position: 'absolute', alignSelf: 'center', bottom: '40%' }}
+              onPress={() => {
+                setPlaying(true);
+              }}
+            >
+              <View
+                style={styles.iconPlay}>
+                <FontAwesome
+                  color={COLORS.pink}
+                  style={{ marginLeft: 5 }}
+                  size={35} name='play' />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={.7}
+              style={{ position: 'absolute', top: 20, left: 20 }}
+              onPress={onBackButton}>
+              <View>
+                <FontAwesome size={35} color={COLORS.white} name='angle-left' />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={.7}
+              style={{ position: 'absolute', top: 20, right: 20 }}
+              onPress={()=>{
+                if(isHeart){
+                  setHeart(false);
+                  dispatch(removeFav(itemMovie.id));
+                } 
+                else{
+                  setHeart(true);
+                  dispatch(addFav(itemMovie));
+                }
+              }}>
+              <View>
+                <FontAwesome size={35} color={COLORS.pink} name={isHeart ? 'heart' : 'heart-o'} />
+              </View>
+            </TouchableOpacity>
+          </View>
       }
       <ScrollView
         ref={(ref => setRef(ref))}
@@ -177,9 +273,9 @@ const Stack = createStackNavigator();
 
 const DetailScreen = ({ route, navigation }) => {
   return (
-      <Provider store={store}>
-        <Screen route={route} navigation={navigation} />
-      </Provider>
+    <Provider store={store}>
+      <Screen route={route} navigation={navigation} />
+    </Provider>
   );
 }
 
@@ -194,6 +290,14 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: 'lato_regular',
   },
+  iconPlay: {
+    backgroundColor: COLORS.gray3,
+    borderRadius: 50,
+    width: 65,
+    height: 65,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default DetailScreen;

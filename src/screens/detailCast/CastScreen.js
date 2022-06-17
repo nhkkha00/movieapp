@@ -16,8 +16,6 @@ const CastScreen = ({ route, navigation }) => {
 
   const [actors, setActors] = useState(cast);
 
-  console.log(current_page);
-
   const [currentPage, setCurrentPage] = useState(current_page);
 
   const [ref, setRef] = useState(null);
@@ -87,8 +85,6 @@ const CastScreen = ({ route, navigation }) => {
       setActors(cast);
     }
   }
-
-  console.log(actors.length)
 
   async function onViewMoreTouch(item) {
     const resActor = await axios.get(GET_URL_DETAIL_PERSON(item.id));
