@@ -1,5 +1,5 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, FlatList, Animated, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Animated, Dimensions,ScrollView } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import Title from './Title';
@@ -13,7 +13,6 @@ import axios from 'axios';
 import { GET_URL_DETAIL_MOVIE } from '../../connection/MethodApi';
 import { useDeviceOrientation } from '@react-native-community/hooks'
 import Pagination from '../../components/Pagination';
-import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Screen = ({ navigation }) => {
@@ -164,12 +163,14 @@ const Screen = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 overScrollMode='never'
+                nestedScrollEnabled={true}
               >
                 <ListMovies
                   data={dataMovie}
                   onTouchMovie={onTouchMovie}
                   width={180}
                   numColumn={3}
+                  scrollEnabled={false} 
                 // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
                 />
                 {
@@ -198,12 +199,15 @@ const Screen = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               overScrollMode='never'
-              style={{ flex: 1 }}>
+              style={{ flex: 1 }}
+              nestedScrollEnabled={true}
+              >
               <ListMovies
                 data={dataMovie}
                 onTouchMovie={onTouchMovie}
                 width={170}
                 numColumn={2}
+                scrollEnabled={false} 
               // heightList={[180,190,200,210,220,230,240,250,260,270,280]}
               />
               {

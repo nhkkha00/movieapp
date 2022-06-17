@@ -1,65 +1,92 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Dimensions, ImageBackground, TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import MaskedView from '@react-native-masked-view/masked-view'
-import LinearGradient from 'react-native-linear-gradient';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Dimensions, FlatList, Image, TouchableOpacity } from 'react-native'
 import COLORS from '../../res/color/colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import YouTube from 'react-native-youtube';
-import { GOOGLE_API_KEY } from '../../connection/ApiKey'
-import Loading from '../../components/Loading';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from '../../redux/store';
+import { URL_IMG } from '../../connection/MethodApi';
 
-const FavScreen = () => {
+const Screen = () => {
 
-  const [playing, setPlaying] = useState(false);
+  const dispatch = useDispatch();
 
-  const [isLoadingImage, setLoadingImage] = useState(true);
+  const fav = useSelector(state => state.favs.dataFav);
 
-  function onChangeState(state) {
-    console.log(state);
+  const renderItem = ({ item, index }) => {
+
+    // const randomHeight = getRandomValues(heightList);
+
+
+    let height = 200;
+
+    let width = 180;
+
+    if (index % 2 === 0) {
+      height = 220;
+    }
+    if (index % 3 === 0) {
+      height = 180;
+    }
+
+    const image_source = `${URL_IMG}/w200${item.poster_path}`;
+
+    return (
+      <TouchableOpacity style={{ flex: 1, marginBottom: 10 }} activeOpacity={.7} onPress={() => {
+        // onTouchMovie(item);
+      }}>
+        <Image style={{
+          alignSelf: 'stretch',
+          width: width,
+          height: height,
+          borderRadius: 10,
+          margin: 10
+        }}
+          resizeMode='cover'
+          source={{ uri: image_source }} />
+        <Text
+          numberOfLines={1}
+          style={{
+            color: COLORS.white,
+            marginLeft: 10,
+            width: width,
+            textAlign: 'auto',
+            fontFamily: 'lato_regular'
+          }}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+    )
   }
+
+  useEffect(()=>{
+    
+  },[fav]);
 
   return (
     <View style={styles.container}>
-      {playing ?
-        <YouTube
-          apiKey={GOOGLE_API_KEY}
-          videoId={'https://www.youtube.com/watch?v=hs0m_mcZeGQ'} // The YouTube video ID
-          controls={1}
-          play={playing}
-          onChangeState={onChangeState}
-          fullscreen={false}
-          style={{ height: 300, alignSelf: 'stretch' }}
-        />
-        :
-        <View style={{ height: 300, alignSelf: 'stretch' }}>
-          <ImageBackground
-            resizeMode='cover'
-            source={{ uri: 'https://idsb.tmgrup.com.tr/ly/uploads/images/2021/09/08/thumbs/871x871/142774.jpg' }}
-            onLoad={() => {
-              setLoadingImage(false);
-            }}
-          >
-            <LinearGradient
-              style={{ height: 300, alignSelf: 'stretch' }}
-              colors={[COLORS.black1, COLORS.transparent, COLORS.transparent, COLORS.black2]} />
-          </ImageBackground>
-          <TouchableOpacity
-            activeOpacity={.7}
-            style={{ position: 'absolute', alignSelf: 'center', bottom: '40%' }}
-            onPress={() => {
-              setPlaying(true);
-            }}
-          >
-            <View>
-              <FontAwesome5 size={50} name='play-circle' />
-            </View>
-          </TouchableOpacity>
-
-        </View>
-      }
+      <FlatList
+        overScrollMode='never'
+        numColumns={2}
+        style={{ alignSelf: 'stretch' }}
+        contentContainerStyle={{
+          paddingHorizontal: 10,
+          alignSelf: 'stretch'
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={fav}
+        renderItem={renderItem}
+      />
     </View>
   );
+}
+
+
+const FavScreen = () => {
+  return (
+    <Provider store={store}>
+      <Screen />
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -6,6 +6,8 @@ export const GET_MOVIES = "GET_MOVIES";
 export const UPDATE_MOVIES = "UPDATE_MOVIES";
 export const GET_SIMILAR_MOVIES = "GET_SIMILAR_MOVIES";
 export const UPDATE_SIMILAR_MOVIES = "UPDATE_SIMILAR_MOVIES";
+export const ADD_FAV = "ADD_FAV";
+export const REMOVE_FAV = "REMOVE_FAV";
 
 
 export const getGenres = ()=>{
@@ -27,6 +29,20 @@ export const getMovies = (id,page)=>{
         type: GET_MOVIES,
         id,
         page
+    }
+}
+
+export const addFav = (newFav)=>{
+    return {
+        type: ADD_FAV,
+        newFav
+    }
+}
+
+export const removeFav = (id)=>{
+    return {
+        type: REMOVE_FAV,
+        id
     }
 }
 

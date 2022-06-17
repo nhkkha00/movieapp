@@ -7,7 +7,7 @@ import DescriptionVideo from './DesciptionVideo';
 import RelatedVideo from './RelatedVideo';
 import axios from 'axios';
 import { GET_URL_CAST_CREW, GET_URL_DETAIL_MOVIE, GET_URL_DETAIL_PERSON, GET_URL_VIDEO_MOVIE, URL_IMG } from '../../connection/MethodApi';
-import { getSimilarMovies } from '../../redux/actions';
+import { addFav, ADD_FAV, getSimilarMovies, removeFav } from '../../redux/actions';
 import Loading from '../../components/Loading';
 import { GOOGLE_API_KEY } from '../../connection/ApiKey';
 import Youtube from 'react-native-youtube';
@@ -58,6 +58,20 @@ const Screen = ({ route, navigation }) => {
 
   const image_source = `${URL_IMG}/w500${itemMovie.poster_path}`;
 
+  const fav = useSelector(state => state.favs.dataFav);
+
+  const [isHeart,setHeart]= useState(false);
+
+  useEffect(()=>{
+    if(fav.length > 0){
+      fav.forEach(element => {
+        if(element.id === itemMovie.id){
+          setHeart(true);
+          return;
+        }
+      });
+    }
+  },[fav]);
 
   useEffect(() => {
 
@@ -181,7 +195,7 @@ const Screen = ({ route, navigation }) => {
             }
           </View>
           :
-          <View style={[directionsVideo,{ justifyContent: 'center', alignItems: 'center' }]}>
+          <View style={[directionsVideo, { justifyContent: 'center', alignItems: 'center' }]}>
             <ImageBackground
               resizeMode='cover'
               style={directionsVideo}
@@ -191,7 +205,7 @@ const Screen = ({ route, navigation }) => {
               }}
             >
               <LinearGradient
-                style={ directionsVideo}
+                style={directionsVideo}
                 colors={[COLORS.black1, COLORS.transparent, COLORS.transparent, COLORS.black2]} />
             </ImageBackground>
             <TouchableOpacity
@@ -201,11 +215,12 @@ const Screen = ({ route, navigation }) => {
                 setPlaying(true);
               }}
             >
-              <View style={styles.iconPlay}>
+              <View
+                style={styles.iconPlay}>
                 <FontAwesome
-                color={COLORS.pink}
-                style={{marginLeft:5}}
-                size={35} name='play' />
+                  color={COLORS.pink}
+                  style={{ marginLeft: 5 }}
+                  size={35} name='play' />
               </View>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={.7}
@@ -213,6 +228,22 @@ const Screen = ({ route, navigation }) => {
               onPress={onBackButton}>
               <View>
                 <FontAwesome size={35} color={COLORS.white} name='angle-left' />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={.7}
+              style={{ position: 'absolute', top: 20, right: 20 }}
+              onPress={()=>{
+                if(isHeart){
+                  setHeart(false);
+                  dispatch(removeFav(itemMovie.id));
+                } 
+                else{
+                  setHeart(true);
+                  dispatch(addFav(itemMovie));
+                }
+              }}>
+              <View>
+                <FontAwesome size={35} color={COLORS.pink} name={isHeart ? 'heart' : 'heart-o'} />
               </View>
             </TouchableOpacity>
           </View>
@@ -259,13 +290,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: 'lato_regular',
   },
-  iconPlay:{
-    backgroundColor:COLORS.gray3,
-    borderRadius:50,
-    width:65,
-    height:65,
-    justifyContent:'center',
-    alignItems:'center'
+  iconPlay: {
+    backgroundColor: COLORS.gray3,
+    borderRadius: 50,
+    width: 65,
+    height: 65,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

@@ -12,7 +12,7 @@ const reducerMovies = (state = initialData, actions)=>{
             return {
                 ...state,
                 dataMovies: actions.dataMovies,
-                totalPages: actions.totalPages
+                totalPages: actions.totalPages,
             };
         default:
             return state;

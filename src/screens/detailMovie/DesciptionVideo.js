@@ -39,6 +39,7 @@ const DescriptionVideo = ({ itemMovie, cast, runtime, genres, onCastTouch, onLis
                         <Ionicons name='star' color={COLORS.gray} size={20} />
                     </View>
                     <Text style={styles.textGray}>{itemMovie.vote_average} (IMDb)</Text>
+
                 </View>
                 <View style={styles.dash}></View>
 
