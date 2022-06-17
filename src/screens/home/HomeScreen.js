@@ -30,7 +30,7 @@ const Screen = ({ navigation }) => {
 
   const total_pages = useSelector(state => state.movies.totalPages);
 
-  const [dataMovie, setDataMovie] = useState([]);
+  const [dataMovie, setDataMovie] = useState(movies);
 
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +57,7 @@ const Screen = ({ navigation }) => {
 
   //click on item movie
   async function onTouchMovie(item) {
+    
     //get related movie
     dispatch(getSimilarMovies(item.id));
     navigation.navigate('DetailStack',
