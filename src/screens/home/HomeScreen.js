@@ -62,7 +62,10 @@ const Screen = ({ navigation }) => {
     navigation.navigate('DetailStack',
       {
         screen: 'Detail',
-        params: { itemMovie: item }
+        params: {
+          screen: 'Home',
+          itemMovie: item
+        }
       });
   }
 

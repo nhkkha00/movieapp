@@ -3,95 +3,96 @@ import { View, StyleSheet, Text, Dimensions, FlatList, Image, TouchableOpacity }
 import COLORS from '../../res/color/colors';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store';
-import { URL_IMG } from '../../connection/MethodApi';
+import { getSimilarMovies } from '../../redux/actions';
+import { useDeviceOrientation } from '@react-native-community/hooks';
+import FavItem from './FavItem';
 
-const Screen = () => {
+const Screen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
+  const { landscape } = useDeviceOrientation();
+
   const fav = useSelector(state => state.favs.dataFav);
 
-  const renderItem = ({ item, index }) => {
+  useEffect(() => {
 
-    // const randomHeight = getRandomValues(heightList);
+  }, [fav]);
 
 
-    let height = 200;
-
-    let width = 180;
-
-    if (index % 2 === 0) {
-      height = 220;
-    }
-    if (index % 3 === 0) {
-      height = 180;
-    }
-
-    const image_source = `${URL_IMG}/w200${item.poster_path}`;
-
-    return (
-      <TouchableOpacity style={{ flex: 1, marginBottom: 10 }} activeOpacity={.7} onPress={() => {
-        // onTouchMovie(item);
-      }}>
-        <Image style={{
-          alignSelf: 'stretch',
-          width: width,
-          height: height,
-          borderRadius: 10,
-          margin: 10
-        }}
-          resizeMode='cover'
-          source={{ uri: image_source }} />
-        <Text
-          numberOfLines={1}
-          style={{
-            color: COLORS.white,
-            marginLeft: 10,
-            width: width,
-            textAlign: 'auto',
-            fontFamily: 'lato_regular'
-          }}>
-          {item.title}
-        </Text>
-      </TouchableOpacity>
-    )
+  async function onTouchMovie(item) {
+    //get related movie
+    dispatch(getSimilarMovies(item.id));
+    navigation.navigate('DetailStack',
+      {
+        screen: 'Detail',
+        params: {
+          screen: 'Fav',
+          itemMovie: item
+        }
+      });
   }
-
-  useEffect(()=>{
-    
-  },[fav]);
 
   return (
     <View style={styles.container}>
-      <FlatList
-        overScrollMode='never'
-        numColumns={2}
-        style={{ alignSelf: 'stretch' }}
-        contentContainerStyle={{
-          paddingHorizontal: 10,
-          alignSelf: 'stretch'
-        }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={fav}
-        renderItem={renderItem}
-      />
+      {landscape ?
+        <FlatList
+          key={'horizontal'}
+          overScrollMode='never'
+          numColumns={3}
+          style={{ alignSelf: 'stretch' }}
+          contentContainerStyle={{
+            paddingHorizontal: 10,
+            alignSelf: 'stretch',
+            justifyContent: 'center'
+          }}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={fav}
+          renderItem={({ item, index }) => {
+            return (
+              <FavItem item={item} index={index} landscape={landscape} onTouchMovie={onTouchMovie} />
+            )
+          }}
+        />
+        :
+        <FlatList
+          key={'vertical'}
+          overScrollMode='never'
+          numColumns={2}
+          style={{ alignSelf: 'stretch' }}
+          contentContainerStyle={{
+            paddingHorizontal: 10,
+            alignSelf: 'stretch',
+            justifyContent: 'center'
+          }}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={fav}
+          renderItem={({ item, index }) => {
+            return (
+              <FavItem item={item} index={index} landscape={landscape} onTouchMovie={onTouchMovie} />
+            )
+          }}
+        />
+      }
     </View>
-  );
+  )
+
 }
 
 
-const FavScreen = () => {
+const FavScreen = ({ route, navigation }) => {
   return (
     <Provider store={store}>
-      <Screen />
+      <Screen navigation={navigation} />
     </Provider>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   }
 });
 

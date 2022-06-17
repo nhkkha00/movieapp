@@ -16,14 +16,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CastScreen from '../detailCast/CastScreen';
 import DetailCastScreen from '../detailCast/DetailCastScreen';
 import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
 
 
 const Screen = ({ route, navigation }) => {
 
-  const { itemMovie } = route.params;
+  const { itemMovie, screen } = route.params;
 
   const { landscape } = useDeviceOrientation();
 
@@ -54,31 +55,36 @@ const Screen = ({ route, navigation }) => {
 
   const [playing, setPlaying] = useState(false);
 
-  const [loadingImage, setLoadingImage] = useState(true);
-
   const image_source = `${URL_IMG}/w500${itemMovie.poster_path}`;
 
   const fav = useSelector(state => state.favs.dataFav);
 
-  const [isHeart,setHeart]= useState(false);
+  const [isHeart, setHeart] = useState(false);
 
-  useEffect(()=>{
-    if(fav.length > 0){
+  useEffect(() => {
+    if (fav.length > 0) {
       fav.forEach(element => {
-        if(element.id === itemMovie.id){
+        if (element.id === itemMovie.id) {
           setHeart(true);
           return;
         }
       });
     }
-  },[fav]);
+  }, [fav]);
 
   useEffect(() => {
 
     const backAction = () => {
-      navigation.navigate('Main', {
-        screen: 'Home',
-      });
+
+      if (screen === 'Home') {
+        navigation.navigate('Main', {
+          screen: 'Home',
+        });
+      } else {
+        navigation.navigate('Main', {
+          screen: 'Fav',
+        });
+      }
       return true;
     };
 
@@ -93,9 +99,15 @@ const Screen = ({ route, navigation }) => {
   }, []);
 
   function onBackButton() {
-    navigation.navigate('Main', {
-      screen: 'Home',
-    });
+    if (screen === 'Home') {
+      navigation.navigate('Main', {
+        screen: 'Home',
+      });
+    } else {
+      navigation.navigate('Main', {
+        screen: 'Fav',
+      });
+    }
   }
 
 
@@ -201,7 +213,7 @@ const Screen = ({ route, navigation }) => {
               style={directionsVideo}
               source={{ uri: image_source }}
               onLoad={() => {
-                setLoadingImage(false);
+                console.log('onLoad');
               }}
             >
               <LinearGradient
@@ -224,20 +236,20 @@ const Screen = ({ route, navigation }) => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={.7}
-              style={{ position: 'absolute', top: 20, left: 20 }}
+              style={{ position: 'absolute', top: 20, left: 20 ,width:50,height:60}}
               onPress={onBackButton}>
-              <View>
-                <FontAwesome size={35} color={COLORS.white} name='angle-left' />
+              <View style={{margin:10}}>
+                <FontAwesome5 size={35} color={COLORS.white} name='chevron-left' />
               </View>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={.7}
               style={{ position: 'absolute', top: 20, right: 20 }}
-              onPress={()=>{
-                if(isHeart){
+              onPress={() => {
+                if (isHeart) {
                   setHeart(false);
                   dispatch(removeFav(itemMovie.id));
-                } 
-                else{
+                }
+                else {
                   setHeart(true);
                   dispatch(addFav(itemMovie));
                 }
